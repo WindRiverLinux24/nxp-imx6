@@ -622,7 +622,8 @@ This BSP supports disk images for SD card.
 After build the project, user will get a WIC image under the directory
 tmp/deploy/images/<bsp name>/ ,such as:
 
-tmp/deploy/images/nxp-imx6/wrlinux-image-glibc-small-nxp-imx6.wic
+tmp-glibc/deploy/images/nxp-imx6/wrlinux-image-glibc-std-sato-nxp-imx6-imx6q.wic
+tmp-glibc/deploy/images/nxp-imx6/wrlinux-image-glibc-std-sato-nxp-imx6-imx6sx.wic
 
 Then user can write the output image to a SD card:
 
@@ -633,26 +634,35 @@ image to SD card directly by "dd" command.
 9.1 Burn images to SD card
 --------------------------
 
-To burn uboot and WIC images to SD card, user need to execute two steps:
+To burn uboot and WIC images to SD card, user need to execute command:
 
-1) Burn WIC image
+For i.mx6q:
+# dd if=wrlinux-image-glibc-std-sato-nxp-imx6-imx6q.wic of=/dev/your_sd_dev
 
-# dd if=wrlinux-image-glibc-small-nxp-imx6.wic of=/dev/your_sd_dev
-
-2) Burn uboot.bin to SD card, user can find uboot.bin under BSP's
-   sublayer "bootloader" and refer bootloader/README for more details:
-
-# dd if=u-boot-imx6qsabresd.imx of=/dev/your_sd_dev bs=512 seek=2 conv=fsync
+For i.mx6sx:
+# dd if=wrlinux-image-glibc-std-sato-nxp-imx6-imx6sx.wic of=/dev/your_sd_dev
 
 9.2 Set uboot env
 -----------------
 
 Board can boot automatically by set the below uboot environment variables:
 
+For i.mx6q:
+
 => setenv bootfile zImage; setenv fdtfile imx6q-sabresd.dtb;  setenv loadaddr 0x12000000; setenv fdtaddr 0x18000000;
 
-=> setenv bootargs 'root=/dev/mmcblk1p1 rw rootdelay=5 console=ttymxc0,115200n8'
+=> setenv bootargs 'root=/dev/mmcblk1p2 rw rootdelay=5 console=ttymxc0,115200n8'
 
-=> setenv bootcmd 'ext2load mmc 1:1 $loadaddr /boot/$bootfile; ext2load mmc 1:1 $fdtaddr /boot/$fdtfile; bootz $loadaddr - $fdtaddr';
+=> setenv bootcmd 'ext2load mmc 1:1 $loadaddr $bootfile; ext2load mmc 1:1 $fdtaddr $fdtfile; bootz $loadaddr - $fdtaddr';
+
+=> saveenv; run bootcmd;
+
+For i.mx6sx
+
+=> setenv bootfile zImage; setenv fdtfile imx6sx-sdb.dtb;  setenv loadaddr 0x80800000; setenv fdtaddr 0x83000000;
+
+=> setenv bootargs 'root=/dev/mmcblk2p2 rw rootdelay=5 console=ttymxc0,115200n8'
+
+=> setenv bootcmd 'fatload mmc 2:1 $loadaddr $bootfile; fatload mmc 2:1 $fdtaddr $fdtfile; bootz $loadaddr - $fdtaddr';
 
 => saveenv; run bootcmd;
