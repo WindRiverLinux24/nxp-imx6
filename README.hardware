@@ -16,12 +16,14 @@ This BSP supports the following boards:
 
    + I.MX6Q SABRE-SD   : Board: Freescale SABRE SD, SCH-27392 REV C4, 700-27392 REV C.
 			 CPU: PCIMX6Q6AVT10AC SBAE1234
+   + I.MX6SX SABRE-SDB : Board: Freescale SABRE SD, SCH-27962 REV C, 700-27962 REV A2.
+			 CPU: PCIMX6X4EVN10AB P6P530W7
 
 2. Change History
 =================
 
-  - 2017/04 (US91280): WRLinux 9.0 RCPL04, add I.MX6Q SABRE-SD board support
-		       based on FSL IMX SDK v4.1.15
+  - 2018/06 (US107623): WRLinux 10.17.41 RCPL07, support I.MX6Q SABRE-SD and I.MX6SX SABRE-SDB boards.
+		       based on FSL IMX SDK v4.9.11
 
 3. BSP Features
 ===============
@@ -33,7 +35,6 @@ This BSP supports the following features.
 
   o General Platform
 	+ KGDBoC
-	+ OProfile (timer mode)
 
   o Bus
 	+ I2C: On-Chip I2C controller
@@ -43,28 +44,31 @@ This BSP supports the following features.
   o Network
 	+ Ethernet: FEC 10/100/1000 MAC ethernet controller, KSZ9021 external PHY
 	+ IEEE 1588: based on FEC controller
+	+ CAN: FLEXCAN, Flexible controller area network (IMX6SX SABRE-SDB only)
 
   o USB
 	+ USB OTG: On-Chip UTMI transceiver, high/full/low speed
+	+ USB Host: 3 EHCI compatible host controller in the chip (IMX6SX SABRE-SDB only)
 
   o Storage
 	+ SD/MMC: On-Chip ultra secured digital host controller (uSDHC)
-	+ eMMC: On-chip embedded multimediacard, 1bit/4bit/8bit SDR/DDR mode
-	+ NOR Flash: 2MB SST25VF016B SPI NOR Flash
-	+ SATA: On-Chip AHCI SATA controller
+	+ eMMC: On-chip embedded multimediacard, 1bit/4bit/8bit SDR/DDR mode (IMX6Q SABRE-SD only)
+	+ NOR Flash: 4MB M25P32 SPI NOR Flash (IMX6Q SABRE-SD only)
+	             32MB N25Q256A QSPI NOR Flash (IMX6SX SABRE-SDB only)
+	+ SATA: On-Chip AHCI SATA controller (IMX6Q SABRE-SD only)
 
   o User_Interface_Multimedia
 	+ AUDIO:
-		+ HDMI codec
+		+ HDMI codec (IMX6Q SABRE-SD only)
 		+ WM8962 codec
 
 	+ Touchscreen: EGALAX touchscreen controller connected via i2C
 	+ LVDS: On-Chip LVDS display bridge (LDB) will be used to connect the IPU to external
 		LVDS display interface, HannStar HSD100PXN1-A TFT LCD with XGA resolution, Framebuffer support
 	+ Backlight
-	+ HDMI: On-Chip HDMI controller
+	+ HDMI: On-Chip HDMI controller (IMX6Q SABRE-SD only)
 	+ IPU: On-Chip image processing unit
-	+ VPU: On-Chip video processing unit (VPU) is the multi-media video processing block
+	+ VPU: On-Chip video processing unit (VPU) is the multi-media video processing block (IMX6Q SABRE-SD only)
 	+ V4L2 Output: The V4L2 output driver uses the IPU post-processing functions for video output.
 	+ V4L2 Capture
 	+ Camera: OV5642 chip
@@ -73,16 +77,16 @@ This BSP supports the following features.
 	+ Suspend to RAM
 	+ CPU Freq
 	+ Bus Freq
-	+ CPU idle (Only state0 and state1 are supported by i.MX6Q Sabre SD)
+	+ CPU idle (Only state0 and state1 are supported by IMX6Q SABRE-SD)
 
   o GPU
 	+ 3D:
-		+ Vivante GC2000 (i.MX6Q)
-		+ Vivante GC400T (i.MX6SX)
+		+ Vivante GC2000 (IMX6Q SABRE-SD only)
+		+ Vivante GC400T (IMX6SX SABRE-SDB only)
 	+ 2D:
-		+ Vivante GC320 (i.MX6Q)
-		+ Vivante GC400T (i.MX6SX)
-	+ Vector: Vivante GC355 (i.MX6Q)
+		+ Vivante GC320 (IMX6Q SABRE-SD only)
+		+ Vivante GC400T (IMX6SX SABRE-SDB only)
+	+ Vector: Vivante GC355 (IMX6Q SABRE-SD only)
 
   o Misc Devices
 	+ UART: On-Chip High-Speed UART
@@ -136,12 +140,19 @@ accompanied the board.
 NOTE: This BSP is only validated in the following environment, if used in a
 different environment it may run into unknown issues.
 
-SABRE SD:
+IMX6Q SABRE-SD:
 	Processor:             IMX6Q
 	CPU Revision:          rev1.2 (PCIMX6Q6AVT10AC)
 	Board Revision:        Freescale SABRE SD (SCH-27392 REV C4, 700-27392 REV C)
 	BootLoader:            U-Boot
-	BootLoader Version:    U-Boot 2015.04imx_v2015.04_4.1.15_1.2.0_ga+gede7538 (Oct 09 2016 - 12:35:22)
+	BootLoader Version:    U-Boot 2016.03-21152-ga57b13b942-dirty (Apr 26 2018 - 02:21:13 -0400)
+
+IMX6SX SABRE-SDB:
+	Processor:             IMX6SX
+	CPU Revision:          rev1.2
+	Board Revision:        Freescale SABRE SDB SCH-27962 REV C, 700-27962 REV A2
+	BootLoader:            U-Boot
+	BootLoader Version:    U-Boot 2016.03-21152-ga57b13b942-dirty (Apr 26 2018 - 02:22:30 -0400)
 
 Note:
 	If the board's u-boot could not support dtb, please refer to bootloader/README
@@ -150,7 +161,7 @@ to update u-boot.
 4.3 Specify boot medium
 -----------------------
 
-4.3.1 Sabre SD (SCH-27392 REV C4, 700-27392 REV C)
+4.3.1 IMX6Q SABRE-SD (SCH-27392 REV C4, 700-27392 REV C)
 --------------------------------------------------
 
 1. Booting from SD card from Slot2
@@ -161,7 +172,7 @@ slot(J500) sits besides the LVDS1 connection on the back of the board.
 Boot switch setup for SD2 boot (J500)
 
 Switch	D1   D2   D3   D4   D5   D6   D7   D8
-SW6	ON   OFF  OFF  OFF  OFF  OFF  ON   OFF
+SW6		ON   OFF  OFF  OFF  OFF  OFF  ON   OFF
 
 2. Booting from SD card from Slot3
 
@@ -171,7 +182,7 @@ slot(J507) is located between the HDMI and UART ports.
 Boot switch setup for SD3 boot (J507)
 
 Switch	D1   D2   D3   D4   D5   D6   D7   D8
-SW6	OFF  ON   OFF  OFF  OFF  OFF  ON   OFF
+SW6		OFF  ON   OFF  OFF  OFF  OFF  ON   OFF
 
 3. Booting from eMMC4.4
 
@@ -180,4 +191,4 @@ The following table shows the boot switch settings to boot from eMMC4.4
 besides the LVDS1 connection on the back of the board.
 
 Switch	D1   D2   D3   D4   D5   D6   D7   D8
-SW6	ON   ON   OFF  ON   OFF  ON   ON   OFF
+SW6		ON   ON   OFF  ON   OFF  ON   ON   OFF

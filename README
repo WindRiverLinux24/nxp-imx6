@@ -1,4 +1,4 @@
-        i.MX6Q Sabre-SD Board Support Package
+        i.MX6Q Sabre-SD/i.MX6SX Sabre-SDB Board Support Package
 
 1. About this document
 ======================
@@ -12,56 +12,45 @@ This layer depends on the oe-core version supplied with Wind River
 Linux and the wr-kernel layer.
 
 Maintenance
-<<<<<<< found
 -----------
 This layer is maintained by Wind River Systems, Inc.
 Contact <support@windriver.com> or your support representative for more
 information on submitting changes.
-||||||| expected
-Building the fsl-imx6 layer
+
+Building the nxp-imx6 layer
 ---------------------------
 This layer and wr-kernel layer should be added to bblayers.conf. This
 is done automatically when using the Wind River configure wrapper.
-=======
-Building the fsl-imx6 layer
----------------------------
-This layer and the wr-kernel layer should be added to bblayers.conf. 
->>>>>>> replacement
 
 License
 -------
-Copyright (C) 2015-2017 Wind River Systems, Inc.
+Copyright (C) 2017 Wind River Systems, Inc.
 
 The right to copy, distribute or otherwise make use of this software may
 be licensed only pursuant to the terms of an applicable Wind River license
 agreement. No license to Wind River intellectual properly rights is granted
 herein. All rights not licensed by Wind River are reserved by Wind River.
 
-Source code included in the tree for individual recipes is under the LICENSE
-stated in each recipe (.bb file) unless otherwise stated.
+Source code included in tree for individual recipes is under the LICENSE
+stated in each recipe (.bb file) unless other stated.
 
-2. BSP Kernel and Image Combination
-====================================
+2. BSP Kernel and Distros
+=========================
 
-Valid WindRiver Linux kernel and Image combinations for this BSP are
-described in the following table.
-The leftmost column indicates the kernel type, and the top row indicates the
-image type.
-A 'Y' in a content cell means that the combination is supported; 'N' means 
-that it is not supported:
+The following table summarizes the valid Wind River Linux distros for this BSP.
+'Y' in each content cell stands for supported; 'N' stands for not supported:
 
---------------------------------------------------------------------
-| kernel/image  | glibc-std | glibc-small | glibc-cgl | glibc-tiny |
---------------------------------------------------------------------
-|   standard    |     Y     |      Y      |     N     |     N      |
---------------------------------------------------------------------
-|   preempt_rt  |     Y     |      Y      |     N     |     N      |
---------------------------------------------------------------------
-|   cgl         |     N     |      N      |     N     |     N      |
---------------------------------------------------------------------
+  +--------------+-------------+-------------+-------------+
+  | valid/distro |   wrlinux   | wrlinux-cgl | wrlinux-ovp |
+  +--------------+-------------+-------------+-------------+
+  |    valid     |      Y      |      N      |      N      |
+  +--------------+-------------+-------------+-------------+
 
-NOTE: With regard to the kernel and image type, please refer to WindRiver Linux
-specification for details.
+For the supported kernel type for this BSP, please check the TARGET_SUPPORTED_KTYPES
+by running 'bitbake -e | grep "^TARGET_SUPPORTED_KTYPES"'.
+
+Note: The preempt-rt kernel type can be used with this BSP/Machine.
+
 
 3. Board Specific Patches
 =========================
@@ -69,7 +58,7 @@ To get a list of patches applied to the kernel specific to this BSP,
 along with patch descriptions, use git to see what changed on the default
 kernel (git whatchanged <kernel_type>..<bsp_name>). For example:
 
-	# bitbake -c devshell linux-windriver
+	# cd tmp-glibc/work-shared/nxp-imx6/kernel-source
 	# git whatchanged standard/base..
 
 
@@ -146,7 +135,7 @@ Mount the new partition and deploy the root filesystem image to it:
 
 	# mkdir /mnt/sd
 	# mount /dev/sdb2 /mnt/sd
-	# tar -C /mnt/sd -jxf wrlinux-image-glibc-small-xxxx-nxp-imx6.tar.bz2 --numeric-owner
+	# tar -C /mnt/sd -jxf wrlinux-image-glibc-xxx-nxp-imx6.tar.bz2 --numeric-owner
 
 
 4.1.3 Deploy U-Boot, DTB and kernel to SD/MMC
@@ -156,7 +145,7 @@ Mount the new partition and deploy the root filesystem image to it:
 
 Enter the following command to copy the U-Boot image to the SD/MMC card:
 
-	# sudo dd if=u-boot-mx6q-${board name}.imx of=/dev/sdb bs=512 seek=2 conv=fsync
+	# sudo dd if=u-boot-${board name}.imx of=/dev/sdb bs=512 seek=2 conv=fsync
 
 This command assumes a pre-build U-Boot image delivered with the BSP or built from
 the U-Boot source code. The first 1 KB of the SD/MMC card, which includes
@@ -171,11 +160,9 @@ The following command will copy the kernel image to the first partition of the S
 
 	# mkdir /mnt/sd
 	# mount -t vfat /dev/sdb1 /mnt/sd
-	# cp -rf nxp-imx6-zImage-x.x.x.x_kernel_type /mnt/sd
-	# cp -rf nxp-imx6-imx6q-sabresd-ldo.dtb-x.x.x.x_kernel_type /mnt/sd
-	# cp -rf nxp-imx6-imx6q-sabresd.dtb-x.x.x.x_kernel_type /mnt/sd
-	# cp -rf nxp-imx6-imx6sx-sdb.dtb-x.x.x.x_kernel_type /mnt/sd
-	# cp -rf nxp-imx6-mx6ul-14x14-evk.dtb-x.x.x.x_kernel_type /mnt/sd
+	# cp -rf zImage /mnt/sd
+	# cp -rf zImage-imx6q-sabresd.dtb /mnt/sd
+	# cp -rf zImage-imx6sx-sabresd.dtb /mnt/sd
 
 
 4.1.4 Load kernel from MMC/SD to memory
@@ -187,8 +174,6 @@ be used. In U-Boot, assign mmc0 to it.
 
 The Sabre-SD board includes three MMC/SD controllers: SD2, SD3, and SD4.
 In U-Boot, assign mmc1, mmc2 and mmc3 to these controllers respectively.
-
-By default, the imx6ul-evk board boots from  micro SD.
 
 Set the active mmc card and partition.
 
@@ -210,21 +195,15 @@ non-runtime way to determine if a card supports partitions or not.
 Next, load the DTB and kernel image from the activated MMC/SD card:
 
 	# mmc rescan
-	# fatload mmc $disk:1 0x12000000 nxp-imx6-zImage-x.x.x.x_kernel_type
+	# fatload mmc $disk:1 0x12000000 zImage
 	# fatload mmc $disk:1 0x18000000 ${fdt_file}
-
-NOTE: The Sabre SD uses nxp-imx6-imx6q-sabresd.dtb-x.x.x.x_kernel_type.
 
 4.1.5 Set bootargs and boot system
 ----------------------------------
 
 	For i.MX6Q/S:
 	# setenv bootargs console=ttymxc0,115200 root=/dev/mmcblk{N}p${M} rw \
-		 rootwait video=mxcfb0:dev=hdmi,1920x1080M@60,if=RGB24
-	# bootz
-
-	For i.MX6UL:
-	# setenv bootargs console=ttymxc0,115200 root=/dev/mmcblk{N}p${M} rw rootwait
+		 rootwait video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666
 	# bootz
 
 Use the bootargs root=/dev/mmcblk{N}p${M}, where N and M describe the disk
@@ -236,18 +215,18 @@ number and partition number.
 
 4.2.1 Prepare Kernel, DTB, NFS and TFTP servers
 -----------------------------------------------
-The files in the following example can be found in <buildprj>/export/images and
-are copied to the export directory of the TFTP server.
+The files in the following example can be found in <buildprj>/tmp-glibc/deploy/images/nxp-imx6
+and are copied to the export directory of the TFTP server.
 
 4.2.2 Download kernel
 ---------------------
 
-	# tftp 0x12000000 nxp-imx6-zImage-x.x.x.x_kernel_type
+	# tftp 0x12000000 zImage
 
 4.2.3 Download DTB
 ------------------
 
-	# tftp 0x18000000 nxp-imx6-xxxxxx.dtb-x.x.x.x_kernel_type
+	# tftp 0x18000000 zImage-imx6q-sabresd.dtb
 
 4.2.4 Set bootargs and boot the system
 --------------------------------------
@@ -256,19 +235,8 @@ are copied to the export directory of the TFTP server.
 	# setenv bootargs console=ttymxc0,115200 root=/dev/nfs rw \
 		 nfsroot=<nfs server>:<nfs root>,v3,tcp \
 		 ip=<target IP>::<gateway>:<netmask>::eth0:off \
-		 video=mxcfb0:dev=hdmi,1920x1080M@60,if=RGB24
+		 video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666
 	# bootz 0x12000000 - 0x18000000
-
-	For i.MX6UL:
-	Note, the HDMI transmitter and NAND flash are not soldered onto the board.
-	Refer to the i.IMX6UltraLite EVK Board hardware user's guide for information
-	about how to use them.
-
-	# setenv bootargs console=ttymxc0,115200 root=/dev/nfs rw \
-		 nfsroot=<nfs server>:<nfs root>,v3,tcp \
-		 ip=<target IP>::<gateway>:<netmask>::eth0:off
-	# bootz 0x12000000 - 0x18000000
-
 
 5. Features
 ===========
@@ -443,7 +411,7 @@ CPU frequency scaling allows the clock speed of the CPU to be changed on the fly
 5.9 Backlight
 --------------
 
-	# echo 0 >/sys/class/backlight/backlight-lvds/brightness
+	# echo 0 > /sys/class/backlight/backlight/brightness
 
 5.10 ANATOP thermal
 -------------------
@@ -469,14 +437,7 @@ CPU frequency scaling allows the clock speed of the CPU to be changed on the fly
 
 	# mtdev-test /dev/input/event0
 
-5.12 OProfile
-------------
-
-Since this BSP does not have a hardware performance counter, OProfile 
-must be used in timer mode. If you are using OProfile, you need to add 
-"oprofile.timer=1" to the kernel boot options.
-
-5.13 PCIe
+5.12 PCIe
 --------
 
 Since the on-board PCIe connector only exports the PETP0/N0, PERP0/N0 and 3.3V
@@ -488,41 +449,22 @@ The following PCIe peripherals:
 
 can be validated using the following steps:
 
-<<<<<<< found
 Simply add line as follows to ${buildprj}/build/conf/local.conf:
 
 	KERNEL_FEATURES_append = " features/iwlwifi/iwlwifi.scc"
-||||||| expected
-Simply including in your configure line as follows:
 
-	--enable-kernel=standard+features/iwlwifi/iwlwifi.scc
-=======
 Include the following lines in your local.conf:
 
 	LINUX_KERNEL_TYPE = "standard"
 	KERNEL_FEATURES_append = " features/iwlwifi/iwlwifi.scc"
 
-and run menuconfig to add the iwlwifi and mac80211 modules:
-
-	# bitbake -c menuconfig linux-windriver
->>>>>>> replacement
-
 This will include the iwlwifi and mac80211 kernel modules in
 the root filesystem.
 
-<<<<<<< found
-||||||| expected
-Make the consistency for them(Built and install)
-
-	# make -C build wireless-tools.addpkg
-	# make fs
-
-=======
 Built and install them:
 
-	# bitbake wrlinux-image-glibc-standard
+	# bitbake wrlinux-image-glibc-xxx
 
->>>>>>> replacement
 Copy relevant WiFi card firmware (Intel 6205 WiFi firmware: iwlwifi-6000g2a-5.ucode)
 of to /lib/firmware of the target image.
 
@@ -533,44 +475,26 @@ Execute the following commands to validate the WiFi cards:
 	# dhclient wlan0
 	# ping <AP address> -i wlan0 -c 1
 
-NOTE: the PCIe driver does not support hotplug and suspend/resume.<<<<<<< found
-.
-||||||| expected
-Since the graphics support in the fsl-imx6 is provided via binaries,
-the graphics package must be compiled according to Freescale's EULA.
+NOTE: the PCIe driver does not support hotplug and suspend/resume.
 
-Using the template to configure the project:
+5.13 Graphics/GPU
+-----------------
 
-	$ ../wrlinux/configure --enable-board=fsl-imx6 \
-		--enable-rootfs=glibc_std_sato \
-		--with-layer=wr-bsps/fsl-imx6/wr-imx6-graphic
-
-Note:
-You must change the configuration to allow download some package from the
-internet. Change BB_NO_NETWORK ?= "1" to BB_NO_NETWORK ?= "0" in the file of
-${buildprj}/bitbake_build/conf/local.conf.
-=======
 Since the graphics support in the fsl-imx6 is provided via binaries,
 the graphics package must be compiled according to Freescale's EULA.
 
 Add the following to your local.conf file to configure the project:
 	
-	LINUX_KERNEL_TYPE = "standard"
-	DISTRO = "glibc_std_sato"
-	MACHINE = "fsl-imx6"
+	DISTRO ?= "wrlinux-std-sato"
 
 Add the following to your bblayers.conf file:
 
-	BBLAYERS += " \
-        wr-bsps/fsl-imx6/wr-imx6-graphic \
-	"
-
+	WRTEMPLATE ?= "feature/imx-extend-support"
 
 NOTE:
 You must change the configuration to allow downloading of packages from the
 internet. Change BB_NO_NETWORK ?= "1" to BB_NO_NETWORK ?= "0" in the file
-${buildprj}/bitbake_build/conf/local.conf.
->>>>>>> replacement
+${buildprj}/conf/local.conf.
 
 5.14 Tune
 -----------------
@@ -631,7 +555,7 @@ Since this BSP doesn't have a firmware to read the uboot from a partition table,
 WIC image only contains kernel, dtb and rootfs. We still need to write U-boot
 image to SD card directly by "dd" command.
 
-9.1 Burn images to SD card
+7.1 Burn images to SD card
 --------------------------
 
 To burn uboot and WIC images to SD card, user need to execute command:
@@ -642,7 +566,7 @@ For i.mx6q:
 For i.mx6sx:
 # dd if=wrlinux-image-glibc-std-sato-nxp-imx6-imx6sx.wic of=/dev/your_sd_dev
 
-9.2 Set uboot env
+7.2 Set uboot env
 -----------------
 
 Board can boot automatically by set the below uboot environment variables:
@@ -653,7 +577,7 @@ For i.mx6q:
 
 => setenv bootargs 'root=/dev/mmcblk1p2 rw rootdelay=5 console=ttymxc0,115200n8'
 
-=> setenv bootcmd 'ext2load mmc 1:1 $loadaddr $bootfile; ext2load mmc 1:1 $fdtaddr $fdtfile; bootz $loadaddr - $fdtaddr';
+=> setenv bootcmd 'fatload mmc 1:1 $loadaddr $bootfile; fatload mmc 1:1 $fdtaddr $fdtfile; bootz $loadaddr - $fdtaddr';
 
 => saveenv; run bootcmd;
 
