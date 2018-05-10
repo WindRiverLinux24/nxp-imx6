@@ -5,8 +5,8 @@ LIC_FILES_CHKSUM = "file://License.md;md5=9d58a2573275ce8c35d79576835dbeb8"
 
 DEPENDS = "assimp devil gstreamer1.0 gstreamer1.0-plugins-base"
 DEPENDS_append = \
-    "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', ' wayland', \
-        bb.utils.contains('DISTRO_FEATURES',     'x11',  ' xrandr', \
+    "${@bb.utils.contains('DISTRO_FEATURES', 'x11', ' xrandr', \
+        bb.utils.contains('DISTRO_FEATURES',     'wayland',  ' wayland', \
                                                                 '', d), d)}"
 DEPENDS_append_imxgpu2d = " virtual/libg2d virtual/libopenvg"
 DEPENDS_append_imxgpu3d = " virtual/libgles2"
@@ -25,8 +25,8 @@ RREPLACES_${PN} = "fsl-gpu-sdk"
 RCONFLICTS_${PN} = "fsl-gpu-sdk"
 
 BACKEND = \
-    "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'Wayland', \
-        bb.utils.contains('DISTRO_FEATURES',     'x11',     'X11', \
+    "${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'X11', \
+        bb.utils.contains('DISTRO_FEATURES',     'wayland',     'Wayland', \
                                                              'FB', d), d)}"
 
 FEATURES_append_imxgpu2d = "EGL,OpenVG,G2D,EarlyAccess"
