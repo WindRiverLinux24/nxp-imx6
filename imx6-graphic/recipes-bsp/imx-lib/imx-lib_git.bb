@@ -10,6 +10,7 @@ S = "${WORKDIR}/git"
 
 LIC_FILES_CHKSUM = "file://${S}/COPYING-LGPL-2.1;md5=fbc093901857fcd118f065f900982c24"
 
+PLATFORM_nxp-imx6  = "IMX6Q"
 PLATFORM_mx6q  = "IMX6Q"
 PLATFORM_mx6dl = "IMX6Q"
 PLATFORM_mx6sl = "IMX6S"
@@ -39,4 +40,4 @@ IMXLIB_SRC ?= "git://source.codeaurora.org/external/imx/imx-lib.git;protocol=htt
 SRC_URI = "${IMXLIB_SRC};branch=${SRCBRANCH}"
 SRCREV = "f5f14fc24581e5d6e689f42a56b5f2992f978ef4"
 
-COMPATIBLE_MACHINE = "(mx6|mx7)"
+COMPATIBLE_MACHINE = "nxp-imx6"

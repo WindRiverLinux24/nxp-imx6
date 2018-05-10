@@ -54,4 +54,4 @@ FILES_${PN} = "${bindir} ${libdir}"
 FILES_${PN}-dbg += "${libdir}/*/*/.debug"
 
 PACKAGE_ARCH = "${MACHINE_SOCARCH}"
-COMPATIBLE_MACHINE = "(mx6q|mx6dl|mx6sx|mx6sl|mx7ulp|mx8)"
+COMPATIBLE_MACHINE = "nxp-imx6"

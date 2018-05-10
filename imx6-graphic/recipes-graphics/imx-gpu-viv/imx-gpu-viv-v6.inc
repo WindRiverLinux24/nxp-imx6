@@ -22,6 +22,7 @@ DEPENDS += "${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'mesa', '', d)}"
 EXTRA_PROVIDES = ""
 EXTRA_PROVIDES_append_imxgpu3d = " virtual/libgl virtual/libgles1 virtual/libgles2"
 EXTRA_PROVIDES_append_mx6q     = " virtual/opencl-icd opencl-headers"
+EXTRA_PROVIDES_append_nxp-imx6     = " virtual/opencl-icd opencl-headers"
 EXTRA_PROVIDES_append_mx8      = " virtual/opencl-icd opencl-headers virtual/libopenvx"
 PROVIDES += "imx-gpu-viv virtual/wayland-egl virtual/libgal-x11 virtual/egl virtual/libopenvg ${EXTRA_PROVIDES}"
 

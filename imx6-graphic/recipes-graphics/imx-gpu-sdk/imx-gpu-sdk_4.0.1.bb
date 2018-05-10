@@ -32,6 +32,7 @@ BACKEND = \
 FEATURES_append_imxgpu2d = "EGL,OpenVG,G2D,EarlyAccess"
 FEATURES_append_imxgpu3d = ",OpenGLES2"
 FEATURES_append_mx6q     = ",OpenGLES3"
+FEATURES_append_nxp-imx6     = ",OpenGLES3"
 FEATURES_append_mx6dl    = ",OpenGLES3"
 FEATURES_append_mx8      = ",OpenGLES3,OpenGLES3.1,OpenCL,OpenCL1.1,OpenCL1.2,OpenCV,OpenVX,OpenVX1.0.1"
 FEATURES_append_mx8      = \
@@ -63,4 +64,4 @@ FILES_${PN} += "/opt/${PN}"
 FILES_${PN}-dbg += "/opt/${PN}/*/*/.debug /usr/src/debug"
 INSANE_SKIP_${PN} += "already-stripped rpaths"
 
-COMPATIBLE_MACHINE = "(mx6|mx8|mx7ulp)"
+COMPATIBLE_MACHINE = "nxp-imx6"
