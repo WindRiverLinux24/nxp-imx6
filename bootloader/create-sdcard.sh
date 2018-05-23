@@ -85,12 +85,9 @@ if [ "$NUM_OF_DRIVES" != "0" ]; then
 fi
 
 dd if=/dev/zero of=$DRIVE bs=1024 count=1024
-SIZE=`fdisk -l $DRIVE | grep Disk | awk '{print $5}'`
-echo DISK SIZE - $SIZE bytes
-CYLINDERS=`echo $SIZE/255/63/512 | bc`
-sfdisk -D -H 255 -S 63 -C $CYLINDERS $DRIVE << EOF
-1,12,0x0C,*
-13,,,-
+sfdisk -u S -L $DRIVE << EOF
+1000,144522,0x0C,*
+160650,,,-
 EOF
 
 cat << EOM
