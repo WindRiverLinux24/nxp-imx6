@@ -11,4 +11,4 @@ do_make_nxp_imx6_wic() {
 	fi
 }
 
-addtask make_nxp_imx6_wic after do_image_complete before do_build
+addtask make_nxp_imx6_wic after do_image_wic before do_build
