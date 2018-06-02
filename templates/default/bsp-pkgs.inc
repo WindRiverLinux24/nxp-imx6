@@ -1,5 +1,5 @@
 IMAGE_INSTALL += "i2c-tools"
-IMAGE_INSTALL += "canutils"
+IMAGE_INSTALL += "can-utils"
 IMAGE_INSTALL += "pm-utils"
 IMAGE_INSTALL += "alsa-utils"
 IMAGE_INSTALL += "mtdev"
