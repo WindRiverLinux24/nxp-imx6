@@ -340,21 +340,32 @@ NOTE: the PCIe driver does not support hotplug and suspend/resume.
 5.13 Graphics/GPU
 -----------------
 
-Since the graphics support in the fsl-imx6 is provided via binaries,
-the graphics package must be compiled according to Freescale's EULA.
-
 Add the following to your local.conf file to configure the project:
 	
 	DISTRO ?= "wrlinux-std-sato"
 
-Add the following to your bblayers.conf file:
+Use the command as below to add graphic layer:
 
-	WRTEMPLATE ?= "feature/imx-extend-support"
+	bitbake-layers add-layer path_to_WRLinux_product/layers/nxp-imx6/imx6-graphic
+
+Use the command as below to build rootfs:
+
+	bitbake wrlinux-image-glibc-std-sato
 
 NOTE:
-You must change the configuration to allow downloading of packages from the
+
+1. You must change the configuration to allow downloading of packages from the
 internet. Change BB_NO_NETWORK ?= "1" to BB_NO_NETWORK ?= "0" in the file
 ${buildprj}/conf/local.conf.
+
+2. Since some packages which are used to support the graphic feature in
+nxp-imx6 is provided via binaries, when you build a nxp-imx6 project with
+graphic support, there will be error info as below:
+-----------ERROR--------------
+ERROR: imx-gpu-viv-1_6.2.2.p0-aarch32-r0 do_unpack: To use 'imx-gpu-viv' you need to accept the Freescale EULA at 'path_to_WRLinux_product/layers/meta-freescale/EULA'. Please read it and in case you accept it, write: ACCEPT_FSL_EULA = "1" in your local.conf.
+------------------------------
+Please read the Freescale EULA file carefully, in case you accept it, write:
+ACCEPT_FSL_EULA = "1" to your local.conf file to continue the building.
 
 5.14 Tune
 -----------------
