@@ -395,7 +395,7 @@ for I.MX6Q:
     crashkernel=256M@512M
 
 For the dump-capture kernel:
-Before booting the dump-capture kernel, add "maxcpus=1" to the boot parameter.
+Before booting the dump-capture kernel, add "maxcpus=1 cma=16M" to the boot parameter.
 NOTE: Use zImage as a secondary kernel. It can be found in the
   build/linux-windriver/4.1-r0/linux-fsl_imx6-standard-build/arch/arm/boot
 directory.
