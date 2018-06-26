@@ -171,19 +171,19 @@ to the bootargs parameter of U-Boot.
 -------
 
 To test VPU support, ensure that the HDMI is the default fbdev. Please refer to 
-section 4.1, above, to set the bootargs of U-Boot, then execute the following 
+section 5.1, above, to set the bootargs of U-Boot, then execute the following 
 commands:
 
-	# cd /unit_tests/
+	# cd /unit_tests/VPU
 	# ./mxc_vpu_test.out -D "-i ./akiyo.mp4 -f 0 -t 1"
 
 5.4 V4L2 output/capture and camera
 ----------------------------------
 
-Enable HDMI as the default fbdev as stated in section 4.1, above, then execute
+Enable HDMI as the default fbdev as stated in section 5.1, above, then execute
 the following commands:
 
-	# cd /unit_tests/
+	# cd /unit_tests/V4L2
 	# ./mxc_v4l2_overlay.out -iw 640 -ih 480 -ow 640 -oh 480 -m 0 -di /dev/video1 -fg
 
 5.5 USB feature
@@ -228,25 +228,16 @@ Set the parameters to assign the codec and then record an audio message:
 	# amixer set 'MIXINR IN3R' on
 	# amixer set 'INPGAR IN3R' on
 
-	For i.MX6UL:
-	# amixer cset name='ADC PCM Capture Volume' 80%,80%
-	# arecord -Dplughw:0,0 -r 44100 -f S16_LE -c 2 -d 5 record.wav
-
 2. Playback
 
 	For i.MX6Q/S:
 	# amixer cset name='Headphone Volume' 127
 
-	FOr i.MX6UL:
-	# amixer cset name="Headphone Playback Volume" 80%,80
-	# aplay  record.wav
-
-
 5.6.2 Audio HDMI playback
 -------------------------
 
 Connect the board to an HDMI display with an HDMI cable,
-then enable fbdev HDMI as in section 4.1, above.
+then enable fbdev HDMI as in section 5.1, above.
 
 Play the recorded audio messages:
 
@@ -388,17 +379,21 @@ To build the boot kernel, enable kexec and kdump in your local.conf file:
 
 	WRTEMPLATE = "feature/kexec feature/kdump"	
 
-To reserve a memory region for the capture kernel, you need to pass the bootargs 
-argument "crashkernel" as follow:
+6.1 kdump
+---------
 
+For the boot kernel:
+To reserve a memory region for the capture kernel, you need to pass the bootargs 
+argument "crashkernel" to the boot kernel as follow:
 for I.MX6Q:
     crashkernel=256M@512M
+for I.MX6SX:
+    crashkernel=256M@2304M
 
 For the dump-capture kernel:
 Before booting the dump-capture kernel, add "maxcpus=1 cma=16M" to the boot parameter.
 NOTE: Use zImage as a secondary kernel. It can be found in the
-  build/linux-windriver/4.1-r0/linux-fsl_imx6-standard-build/arch/arm/boot
-directory.
+tmp-glibc/deploy/images/nxp-imx6/ directory.
 
 For more detailed info about kdump, refer to Documentation/kdump/kdump.txt
 in the kernel source tree.
