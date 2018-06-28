@@ -7,6 +7,7 @@ PREFERRED_VERSION_imx-vpu = "5.4.37"
 
 PNWHITELIST_openembedded-layer += 'freeglut'
 PNWHITELIST_imx6-graphic-layer += 'imx-gpu-viv'
+PNWHITELIST_imx6-graphic-layer += 'imx-gpu-viv-demos'
 PNWHITELIST_imx6-graphic-layer += 'imx-gpu-g2d'
 PNWHITELIST_imx6-graphic-layer += 'imx-gpu-sdk'
 PNWHITELIST_imx6-graphic-layer += 'imx-vpu'
