@@ -134,40 +134,7 @@ To enable HDMI as the default framebuffer device, add:
 
 to the bootargs parameter of U-Boot.
 
-5.2 fbdev LVDS
---------------
-
-"ldb=spl0/1"       --      split mode on DI0/1
-"ldb=dul0/1"       --      dual mode on DI0/1
-"ldb=sin0/1"       --      single mode on LVDS0/1
-"ldb=sep0/1"       --      separate mode begin from LVDS0/1
-
-There are two LVDS channels (LVDS0 and LVDS1) that can transfer video
-data. These two channels can be used in split, dual, single, and separate 
-modes.
-
-* Split mode means display data from DI0 or DI1 will be sent
-  to both channels LVDS0 + LVDS1.
-* Dual mode means display data from DI0 or DI1 will be
-  duplicated on LVDS0 and LVDS1. That said, LVDS0 and LVDS1
-  have the same content.
-* Single mode will only work for DI0/DI1->LVDS0 or DI0/DI1->LVDS1.
-* Separate mode means you can make DI0/DI1->LVDS0 and DI0/DI1->LVDS1
-  work at the same time.
-
-
-To enable LVDS as the default framebuffer device, add:
-
-	For the LVDS0 connection:
-	video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666
-
-	For the LVDS1 connection:
-	video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666 ldb=sin1
-
-to the bootargs parameter of U-Boot.
-
-
-5.3 VPU
+5.2 VPU
 -------
 
 To test VPU support, ensure that the HDMI is the default fbdev. Please refer to 
@@ -177,7 +144,7 @@ commands:
 	# cd /unit_tests/VPU
 	# ./mxc_vpu_test.out -D "-i ./akiyo.mp4 -f 0 -t 1"
 
-5.4 V4L2 output/capture and camera
+5.3 V4L2 output/capture and camera
 ----------------------------------
 
 Enable HDMI as the default fbdev as stated in section 5.1, above, then execute
@@ -186,10 +153,10 @@ the following commands:
 	# cd /unit_tests/V4L2
 	# ./mxc_v4l2_overlay.out -iw 640 -ih 480 -ow 640 -oh 480 -m 0 -di /dev/video1 -fg
 
-5.5 USB feature
+5.4 USB feature
 ---------------
 
-5.5.1 USB OTG Usage and verification
+5.4.1 USB OTG Usage and verification
 ------------------------------------
 
 1. Verify the OTG device mode
@@ -214,10 +181,10 @@ Host machine configuration:
 Replace cable B with cable A.
 
 
-5.6 Audio
+5.5 Audio
 ---------
 
-5.6.1 Audio capture and playback(WM8962)
+5.5.1 Audio capture and playback(WM8962)
 ----------------------------------------
 
 1. Capture
@@ -233,7 +200,7 @@ Set the parameters to assign the codec and then record an audio message:
 	For i.MX6Q/S:
 	# amixer cset name='Headphone Volume' 127
 
-5.6.2 Audio HDMI playback
+5.5.2 Audio HDMI playback
 -------------------------
 
 Connect the board to an HDMI display with an HDMI cable,
@@ -244,14 +211,14 @@ Play the recorded audio messages:
 	# aplay -Dhw:1,0 record.wav
 
 
-5.7 Static PM
+5.6 Static PM
 -------------
 
 The debug UART can be set as a wakeup source with:
 	# echo enabled > /sys/class/tty/ttymxc0/power/wakeup
 	# echo mem > /sys/power/state
 
-5.8 CPU frequency
+5.7 CPU frequency
 ------------------
 
 CPU frequency scaling allows the clock speed of the CPU to be changed on the fly.
@@ -259,12 +226,12 @@ CPU frequency scaling allows the clock speed of the CPU to be changed on the fly
 	# echo powersave > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 	# cat /proc/cpuinfo
 
-5.9 Backlight
+5.8 Backlight
 --------------
 
 	# echo 0 > /sys/class/backlight/backlight/brightness
 
-5.10 ANATOP thermal
+5.9 ANATOP thermal
 -------------------
 
 	To check current CPU temperature
@@ -283,12 +250,12 @@ CPU frequency scaling allows the clock speed of the CPU to be changed on the fly
 	# echo 39445 > trip_point_1_temp
 	The system will shutdown
 
-5.11 Touch Screen
+5.10 Touch Screen
 -----------------
 
 	# mtdev-test /dev/input/event0
 
-5.12 PCIe
+5.11 PCIe
 --------
 
 Since the on-board PCIe connector only exports the PETP0/N0, PERP0/N0 and 3.3V
@@ -328,7 +295,7 @@ Execute the following commands to validate the WiFi cards:
 
 NOTE: the PCIe driver does not support hotplug and suspend/resume.
 
-5.13 Graphics/GPU
+5.12 Graphics/GPU
 -----------------
 
 If you want to build a project with i.mx6 GPU graphic support, please
@@ -370,7 +337,7 @@ ERROR: imx-gpu-viv-1_6.2.2.p0-aarch32-r0 do_unpack: To use 'imx-gpu-viv' you nee
 Please read the Freescale EULA file carefully, in case you accept it, write:
 ACCEPT_FSL_EULA = "1" to your local.conf file to continue the building.
 
-5.14 Tune
+5.13 Tune
 -----------------
 This BSP uses "armv7athf-neon" as the default tune. It supports both
 cortexa9 and cortexa7, but may not have the best optimization. If you use
