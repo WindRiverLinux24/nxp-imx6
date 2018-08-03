@@ -8,7 +8,7 @@ LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://COPYING;md5=08fd295cce89b0a9c74b9b83ed74f671"
 
 DEPENDS += " \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'wayland', \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'weston-graphics', 'wayland', \
        bb.utils.contains('DISTRO_FEATURES',     'x11', 'virtual/libx11 libxdamage libxext libxfixes', \
                                                        '', d), d)} \
 "
@@ -64,7 +64,7 @@ python __anonymous () {
 }
 
 USE_X11 = "${@bb.utils.contains("DISTRO_FEATURES", "x11", "yes", "no", d)}"
-#USE_WL = "${@bb.utils.contains("DISTRO_FEATURES", "wayland", "yes", "no", d)}"
+USE_WL = "${@bb.utils.contains("DISTRO_FEATURES", "weston-graphics", "yes", "no", d)}"
 
 # Inhibit warnings about files being stripped.
 INHIBIT_PACKAGE_STRIP = "1"
@@ -248,8 +248,8 @@ FILES_libclc-imx-dev = "${includedir}/CL ${libdir}/libCLC${SOLIBSDEV}"
 INSANE_SKIP_libegl-imx += "dev-so"
 FILES_libegl-imx = "${libdir}/libEGL${REALSOLIBS} ${libdir}/libEGL${SOLIBSDEV} "
 FILES_libegl-imx-dev = "${includedir}/EGL ${includedir}/KHR ${libdir}/pkgconfig/egl.pc"
-#RDEPENDS_libegl-imx += "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'libgc-wayland-protocol-imx libwayland-viv-imx libgc-wayland-protocol-imx', '', d)}"
-RDEPENDS_libegl-imx-dev += "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'libwayland-egl-imx-dev', '', d)}"
+RDEPENDS_libegl-imx += "${@bb.utils.contains('DISTRO_FEATURES', 'weston-graphics', 'libgc-wayland-protocol-imx libwayland-viv-imx libgc-wayland-protocol-imx', '', d)}"
+RDEPENDS_libegl-imx-dev += "${@bb.utils.contains('DISTRO_FEATURES', 'weston-graphics', 'libwayland-egl-imx-dev', '', d)}"
 
 FILES_libgal-imx = "${libdir}/libGAL${SOLIBS} ${libdir}/libGAL_egl${SOLIBS}"
 FILES_libgal-imx-dev = "${libdir}/libGAL${SOLIBSDEV} ${includedir}/HAL"
@@ -314,7 +314,7 @@ RDEPENDS_libvivante-dri-imx = "libdrm"
 INSANE_SKIP_libwayland-viv-imx += "dev-so"
 FILES_libwayland-viv-imx =  "${libdir}/libwayland-viv${REALSOLIBS}  ${libdir}/libwayland-viv${SOLIBS}"
 FILES_libwayland-viv-imx-dev = "${includedir}/wayland-viv ${libdir})/libwayland-viv${SOLIBSDEV} ${libdir}/pkgconfig/wayland-viv.pc"
-RPROVIDES_libwayland-viv-imx += "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', \
+RPROVIDES_libwayland-viv-imx += "${@bb.utils.contains('DISTRO_FEATURES', 'weston-graphics', \
 					bb.utils.contains('DISTRO_FEATURES', 'x11', '', \
 					'xf86-video-imxfb-vivante', d), '', d)}"
 
