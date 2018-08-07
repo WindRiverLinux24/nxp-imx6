@@ -314,6 +314,14 @@ Add the following to your local.conf file to configure the project:
 	
 	DISTRO ?= "wrlinux-std-sato"
 
+If you want to build an Xwayland image but not an X11 image, add the following line to your local.conf:
+
+	WRTEMPLATE ?= "feature/xwayland-weston-graphics"
+
+If you want to build a wayland image, add the following line to your local.conf:
+
+	WRTEMPLATE ?= "feature/weston-graphics"
+
 Use the command as below to add i.mx6 GPU graphic layer:
 
 	bitbake-layers add-layer path_to_WRLinux_product/layers/nxp-imx6/imx6-graphic
