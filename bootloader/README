@@ -3,10 +3,10 @@ There is no warranty of fitness for any purpose or support provided
 by Wind River for u-boot.
 ---
 
-This directory contains the prebuild u-boot images which are built
-from the u-boot sources provided in Freescale release:
+The u-boot image is able to be built from the u-boot sources provided
+in Freescale release:
 
-git://git.freescale.com/imx/uboot-imx.git imx_v2016.03_4.1.15_2.0.0_ga
+git://source.codeaurora.org/external/imx/uboot-imx.git imx_v2018.03_4.14.78_1.0.0_ga
 
 Update u-boot:
 ==============

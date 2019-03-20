@@ -24,7 +24,7 @@ is done automatically when using the Wind River configure wrapper.
 
 License
 -------
-Copyright (C) 2017 Wind River Systems, Inc.
+Copyright (C) 2019 Wind River Systems, Inc.
 
 The right to copy, distribute or otherwise make use of this software may
 be licensed only pursuant to the terms of an applicable Wind River license
@@ -393,7 +393,7 @@ partitioned image on a SD card. The wic command
 generates partitioned images from existing OpenEmbedded build artifacts.
 User can refer to the below URL to get more WIC details:
 
-http://www.yoctoproject.org/docs/2.2/mega-manual/mega-manual.html#creating-partitioned-images
+https://www.yoctoproject.org/docs/2.6/mega-manual/mega-manual.html#creating-partitioned-images-using-wic
 
 This BSP supports disk images for SD card.
 After build the project, user will get a WIC image under the directory
