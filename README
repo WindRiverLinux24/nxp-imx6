@@ -372,10 +372,17 @@ To build the boot kernel, enable kexec and kdump in your local.conf file:
 For the boot kernel:
 To reserve a memory region for the capture kernel, you need to pass the bootargs 
 argument "crashkernel" to the boot kernel as follow:
+ - Without graphic hardware accelerator
 for I.MX6Q:
     crashkernel=256M@512M
 for I.MX6SX:
     crashkernel=256M@2304M
+
+ - With graphic hardware accelerator
+for I.MX6Q:
+    crashkernel=512M@400M
+for I.MX6SX:
+    crashkernel=400M@2204M
 
 For the dump-capture kernel:
 Before booting the dump-capture kernel, add "maxcpus=1 cma=16M" to the boot parameter.
