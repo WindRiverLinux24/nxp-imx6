@@ -63,11 +63,11 @@ while [ -z "$REPLY" ]; do
 		;;
 		n|N)
 		echo "WARNING has not been read."
-		return 1
+		exit 1
 		;;
 		*)
 		echo "WARNING has not been read."
-		return 1
+		exit 1
 		;;
 	esac
 done
@@ -96,9 +96,15 @@ if [ $# -ne 0 ]; then
 fi
 OPTIND=$OLD_OPTIND
 if test $fsl_setup_help; then
-    usage && clean_up && return 1
+    usage && clean_up && exit 1
+elif test -z "$GRAPHIC_SRC"; then
+    usage && clean_up && exit 1
+elif test -z "$GRAPHIC_DTS"; then
+    usage && clean_up && exit 1
+elif test $# -e 0; then
+    usage && clean_up && exit 1
 elif test $fsl_setup_error; then
-    clean_up && return 1
+    clean_up && exit 1
 fi
 
 mkdir -p $GRAPHIC_DTS/imx6-graphic/conf
@@ -419,4 +425,4 @@ EOF
 fi
 
 echo "\nGraphic layer is generated successfully!"
-clean_up && return 1
+clean_up && exit 1
