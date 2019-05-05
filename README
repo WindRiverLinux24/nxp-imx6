@@ -310,13 +310,9 @@ Setup environment and create a build directory:
 	$ . ./environment-setup-<host>-wrlinuxsdk-linux
 	$ . ./oe-init-build-env <build>
 
-If you want to build an Xwayland image but not an X11 image, add the following line to your local.conf:
+If you want to build an Weston image, please add the following line to your local.conf:
 
-	WRTEMPLATE ?= "feature/xwayland-weston-graphics"
-
-If you want to build a wayland image, add the following line to your local.conf:
-
-	WRTEMPLATE ?= "feature/weston-graphics"
+	WRTEMPLATE ?= "feature/weston-demo"
 
 Generate imx6 graphic layer:
 Because of the licesen issue, nxp-imx6 layer doesn't integrate imx6's GPU or VPU
