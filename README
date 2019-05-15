@@ -242,13 +242,6 @@ CPU frequency scaling allows the clock speed of the CPU to be changed on the fly
 	passive
 	# cat trip_point_0_temp
 	85000
-	# echo 39445 > trip_point_0_temp
-	System is too hot. GPU3D will work at 1/64 clock.
-
-	# cat trip_point_1_type
-	critical
-	# echo 39445 > trip_point_1_temp
-	The system will shutdown
 
 5.10 Touch Screen
 -----------------
@@ -325,7 +318,7 @@ Detail steps as below:
 	# repo init -u https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-sumo -m imx-4.14.78-1.0.0_ga.xml
 	# repo sync
 
-<2>. Run script imx6-graphic/generate-graphic-layer.sh and input correct parameter
+<2>. Run script scripts/generate-graphic-layer.sh and input correct parameter
 	# ./generate-graphic-layer.sh -h
 	 Usage: source generate-graphic-layer.sh
 	    Optional parameters: [-s source-dir] [-d destination-dir] [-h]
@@ -420,7 +413,7 @@ https://www.yoctoproject.org/docs/2.6/mega-manual/mega-manual.html#creating-part
 
 This BSP supports disk images for SD card.
 After build the project, user will get a WIC image under the directory
-tmp/deploy/images/<bsp name>/ ,such as:
+tmp-glibc/deploy/images/<bsp name>/ ,such as:
 
 tmp-glibc/deploy/images/nxp-imx6/wrlinux-image-glibc-std-sato-nxp-imx6-imx6q.wic
 tmp-glibc/deploy/images/nxp-imx6/wrlinux-image-glibc-std-sato-nxp-imx6-imx6sx.wic
