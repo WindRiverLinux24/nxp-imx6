@@ -210,6 +210,12 @@ Play the recorded audio messages:
 
 	# aplay -Dhw:1,0 record.wav
 
+Note:
+On imx6sx platform, it is need to used version 3.4 sdma firmware for supporting
+audio feature. In wrlinux project, the sdma firmware version is 3.3, so
+it is need to copy version 3.4 sdma firmware from SDK rootfs.
+On imx6q platform, audio feature works fine based on version 3.3 sdma firmware.
+But it is recommend customer to use version 3.4 sdma firmware.
 
 5.6 Static PM
 -------------
