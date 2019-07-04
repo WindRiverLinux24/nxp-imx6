@@ -2,7 +2,7 @@
 #   another file extension for new patch to the append in the meta-fsl-arm
 
 # Append path for freescale layer to include alsa-state asound.conf
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS_prepend_nxp-imx6 := "${THISDIR}/${PN}:"
 
 SRC_URI_append_nxp-imx6 = " \
 	file://asound.state \
