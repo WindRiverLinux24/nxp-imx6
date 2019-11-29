@@ -1,4 +1,4 @@
-        i.MX6Q Sabre-SD/i.MX6SX Sabre-SDB Board Support Package
+        i.MX6Q Sabre-SD/i.MX6SX Sabre-SDB/i.MX6 UltraLite 14x14 EVK Board Support Package
 
 1. About this document
 ======================
@@ -96,12 +96,18 @@ and are copied to the export directory of the TFTP server.
 4.2.2 Download kernel
 ---------------------
 
+	For i.MX6Q/S:
 	# tftp 0x12000000 zImage
+	For i.MX6 UltraLite:
+	# tftpboot 0x80800000 zImage
 
 4.2.3 Download DTB
 ------------------
 
+	For i.MX6Q/S:
 	# tftp 0x18000000 zImage-imx6q-sabresd.dtb
+	For i.MX6 UltraLite:
+	tftpboot 0x83000000 imx6ul-14x14-evk.dtb
 
 4.2.4 Set bootargs and boot the system
 --------------------------------------
@@ -112,6 +118,11 @@ and are copied to the export directory of the TFTP server.
 		 ip=<target IP>::<gateway>:<netmask>::eth0:off \
 		 video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666
 	# bootz 0x12000000 - 0x18000000
+	For i.MX6 UltraLite:
+	# setenv bootargs console=ttymxc0,115200 root=/dev/nfs rw \
+                 nfsroot=<nfs server>:<nfs root>,v3,tcp \
+                 ip=<target IP>::<gateway>:<netmask>::eth0:off \
+	#bootz 0x80800000 - 0x83000000
 
 5. Features
 ===========
@@ -438,6 +449,7 @@ tmp-glibc/deploy/images/<bsp name>/ ,such as:
 
 tmp-glibc/deploy/images/nxp-imx6/wrlinux-image-glibc-std-sato-nxp-imx6-imx6q.wic
 tmp-glibc/deploy/images/nxp-imx6/wrlinux-image-glibc-std-sato-nxp-imx6-imx6sx.wic
+tmp-glibc/deploy/images/nxp-imx6/wrlinux-image-glibc-std-nxp-imx6-imx6ul.wic
 
 Then user can write the output image to a SD card:
 
@@ -455,6 +467,9 @@ For i.mx6q:
 
 For i.mx6sx:
 # dd if=wrlinux-image-glibc-std-sato-nxp-imx6-imx6sx.wic of=/dev/your_sd_dev
+# dd if=wrlinux-image-glibc-std-sato-nxp-imx6-imx6sx.wic of=/dev/your_sd_dev
+For i.mx6ul:
+# dd if=wrlinux-image-glibc-std-nxp-imx6-imx6ul.wic of=/dev/your_sd_dev
 
 7.2 Set uboot env
 -----------------
@@ -474,6 +489,16 @@ For i.mx6q:
 For i.mx6sx
 
 => setenv bootfile zImage; setenv fdtfile imx6sx-sdb.dtb;  setenv loadaddr 0x80800000; setenv fdtaddr 0x83000000;
+
+=> setenv bootargs 'root=/dev/mmcblk2p2 rw rootdelay=5 console=ttymxc0,115200n8'
+
+=> setenv bootcmd 'fatload mmc 2:1 $loadaddr $bootfile; fatload mmc 2:1 $fdtaddr $fdtfile; bootz $loadaddr - $fdtaddr';
+
+=> saveenv; run bootcmd;
+
+For i.mx6ul
+
+=> setenv bootfile zImage; setenv fdtfile imx6ul-14x14-evk.dtb;  setenv loadaddr 0x80800000; setenv fdtaddr 0x83000000;
 
 => setenv bootargs 'root=/dev/mmcblk2p2 rw rootdelay=5 console=ttymxc0,115200n8'
 
