@@ -13,6 +13,8 @@ do_make_nxp_imx6_wic() {
 				dd if=u-boot.imx-imx6qsabresd of=${IMAGE_LINK_NAME}-imx6q.wic bs=512 seek=2 conv=fsync,notrunc
 				cp ${IMAGE_LINK_NAME}.wic  ${IMAGE_LINK_NAME}-imx6sx.wic
 				dd if=u-boot.imx-imx6sxsabresd of=${IMAGE_LINK_NAME}-imx6sx.wic bs=512 seek=2 conv=fsync,notrunc
+				cp ${IMAGE_LINK_NAME}.wic  ${IMAGE_LINK_NAME}-imx6ul.wic
+				dd if=u-boot.imx-imx6ul_14x14_evk of=${IMAGE_LINK_NAME}-imx6ul.wic bs=512 seek=2 conv=fsync,notrunc
 			fi
 		done
 	fi
