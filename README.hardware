@@ -43,7 +43,7 @@ This BSP supports the following features.
 
   o Bus
 	+ I2C: On-Chip I2C controller
-	+ PCIe: On-Chip PCIe controller
+	+ PCIe: On-Chip PCIe controller(IMX6Q and IMX6SX only)
 	+ SPI: Freescale ECSPI bus controller in master mode
 
   o Network
@@ -53,29 +53,30 @@ This BSP supports the following features.
 
   o USB
 	+ USB OTG: On-Chip UTMI transceiver, high/full/low speed
-	+ USB Host: 3 EHCI compatible host controller in the chip (IMX6SX SABRE-SDB only)
+	+ USB Host: 3 EHCI compatible host controller in the chip (IMX6SX and IMX6UL only)
 
   o Storage
 	+ SD/MMC: On-Chip ultra secured digital host controller (uSDHC)
 	+ eMMC: On-chip embedded multimediacard, 1bit/4bit/8bit SDR/DDR mode (IMX6Q SABRE-SD only)
 	+ NOR Flash: 4MB M25P32 SPI NOR Flash (IMX6Q SABRE-SD only)
-	             32MB N25Q256A QSPI NOR Flash (IMX6SX SABRE-SDB only)
+	             32MB N25Q256A QSPI NOR Flash (IMX6SX and IMX6UL only)
 	+ SATA: On-Chip AHCI SATA controller (IMX6Q SABRE-SD only)
 
   o User_Interface_Multimedia
 	+ AUDIO:
 		+ HDMI codec (IMX6Q SABRE-SD only)
 		+ WM8962 codec
+		+ WM8960 codec (IMX6UL only)
 
 	+ Touchscreen: EGALAX touchscreen controller connected via i2C
 	+ LVDS: On-Chip LVDS display bridge (LDB) will be used to connect the IPU to external
 		LVDS display interface, HannStar HSD100PXN1-A TFT LCD with XGA resolution, Framebuffer support
 	+ Backlight
-	+ HDMI: On-Chip HDMI controller (IMX6Q SABRE-SD only)
-	+ IPU: On-Chip image processing unit
+	+ HDMI: On-Chip HDMI controller (IMX6Q and IMX6UL only)
+	+ IPU: On-Chip image processing unit(IMX6Q and IMX6SX only)
 	+ VPU: On-Chip video processing unit (VPU) is the multi-media video processing block (IMX6Q SABRE-SD only)
-	+ V4L2 Output: The V4L2 output driver uses the IPU post-processing functions for video output.
-	+ V4L2 Capture
+	+ V4L2 Output: The V4L2 output driver uses the IPU post-processing functions for video output.(IMX6Q and IMX6SX only)
+	+ V4L2 Capture(IMX6Q and IMX6SX only)
 	+ Camera: OV5642 chip
 
   o Power Mgmt
