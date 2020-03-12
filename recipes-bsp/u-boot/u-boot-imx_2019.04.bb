@@ -1,32 +1,31 @@
 # Copyright (C) 2013-2016 Freescale Semiconductor
-# Copyright 2017-2018 NXP
+# Copyright 2017-2019 NXP
 
 DESCRIPTION = "i.MX U-Boot suppporting i.MX reference boards."
 require recipes-bsp/u-boot/u-boot.inc
 inherit pythonnative
 
 PROVIDES += "u-boot"
-DEPENDS_append = " python dtc-native"
+DEPENDS_append = " python dtc-native flex-native bison-native"
 
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 UBOOT_SRC ?= "git://source.codeaurora.org/external/imx/uboot-imx.git;protocol=https"
-SRCBRANCH = "imx_v2018.03_4.14.78_1.0.0_ga"
+SRCBRANCH = "imx_v2019.04_4.19.35_1.1.0"
 SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
-SRC_URI_append = " file://0001-efi_loader-avoid-make-race-condition.patch"
-SRCREV = "654088cc211e021387b04a8c33420739da40ebbe"
+SRCREV = "4d377539a1190e838eae5d8b8a794dde0696d572"
 
 S = "${WORKDIR}/git"
 
-inherit fsl-u-boot-localversion
+inherit nxp-u-boot-localversion
 
-LOCALVERSION ?= "-${SRCBRANCH}"
+LOCALVERSION ?= "-4.19.35-1.1.0"
 
 BOOT_TOOLS = "imx-boot-tools"
 
 do_deploy_append_mx8m () {
-    # Deploy the mkimage, u-boot-nodtb.bin and fsl-imx8mq-XX.dtb for mkimage to generate boot binary
+    # Deploy u-boot-nodtb.bin and fsl-imx8mq-XX.dtb, to be packaged in boot binary by imx-boot
     if [ -n "${UBOOT_CONFIG}" ]
     then
         for config in ${UBOOT_MACHINE}; do
@@ -37,7 +36,6 @@ do_deploy_append_mx8m () {
                 then
                     install -d ${DEPLOYDIR}/${BOOT_TOOLS}
                     install -m 0777 ${B}/${config}/arch/arm/dts/${UBOOT_DTB_NAME}  ${DEPLOYDIR}/${BOOT_TOOLS}
-                    install -m 0777 ${B}/${config}/tools/mkimage  ${DEPLOYDIR}/${BOOT_TOOLS}/mkimage_uboot
                     install -m 0777 ${B}/${config}/u-boot-nodtb.bin  ${DEPLOYDIR}/${BOOT_TOOLS}/u-boot-nodtb.bin-${MACHINE}-${UBOOT_CONFIG}
                 fi
             done
