@@ -1,7 +1,0 @@
-# short-description: Create a nxp-imx6 disk image (SD card)
-# long-description: Create a partitioned disk image for NXP imx6
-# The first partition is NULL, reserved for uboot.
-# The second partition is to accommodate kernel, dtb and rootfs.
-
-part / --ondisk mmcblk --no-table --size 4M
-part / --source rootfs --ondisk mmcblk --fstype=ext4 --label root --align 4

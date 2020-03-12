@@ -24,7 +24,7 @@ is done automatically when using the Wind River configure wrapper.
 
 License
 -------
-Copyright (C) 2019 Wind River Systems, Inc.
+Copyright (C) 2020 Wind River Systems, Inc.
 
 Source code included in the tree for individual recipes is under the LICENSE
 stated in the associated recipe (.bb file) unless otherwise stated.
@@ -112,13 +112,13 @@ and are copied to the export directory of the TFTP server.
 4.2.4 Set bootargs and boot the system
 --------------------------------------
 
-	For i.MX6Q/S:
+	For i.MX6Q:
 	# setenv bootargs console=ttymxc0,115200 root=/dev/nfs rw \
 		 nfsroot=<nfs server>:<nfs root>,v3,tcp \
 		 ip=<target IP>::<gateway>:<netmask>::eth0:off \
 		 video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666
 	# bootz 0x12000000 - 0x18000000
-	For i.MX6 UltraLite:
+	For i.MX6 UltraLite/Solox:
 	# setenv bootargs console=ttymxc0,115200 root=/dev/nfs rw \
                  nfsroot=<nfs server>:<nfs root>,v3,tcp \
                  ip=<target IP>::<gateway>:<netmask>::eth0:off \
@@ -306,7 +306,7 @@ the root filesystem.
 
 Built and install them:
 
-	# bitbake wrlinux-image-glibc-xxx
+	# bitbake wrlinux-image-<std/std-sato>
 
 Copy relevant WiFi card firmware (Intel 6205 WiFi firmware: iwlwifi-6000g2a-5.ucode)
 of to /lib/firmware of the target image.
@@ -326,28 +326,25 @@ NOTE: the PCIe driver does not support hotplug and suspend/resume.
 If you want to build a project with i.mx6 GPU graphic support, please
 follow the steps as below:
 
-Setup program and create a build directory by using the following arguments:
+Create a project directory, and then setup project with the following arguments:
 
-	--machines nxp-imx6 --distros wrlinux-std-sato --dl-layers
+	--machines nxp-imx6 --distros wrlinux-graphics --dl-layers
 
 Setup environment and create a build directory:
 
-	$ . ./environment-setup-<host>-wrlinuxsdk-linux
-	$ . ./oe-init-build-env <build>
-
-If you want to build an Weston image, please add the following line to your local.conf:
-
-	WRTEMPLATE ?= "feature/weston-demo"
+	# . environment-setup-<host>-wrlinuxsdk-linux
+	# . oe-init-build-env <build>
+	# bitbake wrlinux-image-std-sato
 
 Generate imx6 graphic layer:
 Because of the licesen issue, nxp-imx6 layer doesn't integrate imx6's GPU or VPU
 hardware acceleration related packages into WRlinux product. So, if customer wants
 to run hardware graphic feature, please generate graphic with script scripts/generate-graphic-layer.sh.
 Detail steps as below:
-<1>. Download SDK package(L4.14.78_1.0.0_MX6QDLSOLOX) with below command
+<1>. Download SDK package(L4.19.35_1.1.0_MX6QDLSOLOX) with below command
 	# mkdir imx-yocto-bsp
 	# cd imx-yocto-bsp
-	# repo init -u https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-sumo -m imx-4.14.78-1.0.0_ga.xml
+	# repo init -u https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-warrior -m imx-4.19.35-1.1.0.xml
 	# repo sync
 
 <2>. Run script scripts/generate-graphic-layer.sh and input correct parameter
@@ -369,7 +366,7 @@ Use the command as below to add i.mx6 GPU graphic layer:
 
 Use the command as below to build rootfs:
 
-	bitbake wrlinux-image-glibc-std-sato
+	bitbake wrlinux-image-std-sato
 
 NOTE:
 
@@ -381,7 +378,7 @@ ${buildprj}/conf/local.conf.
 nxp-imx6 is provided via binaries, when you build a nxp-imx6 project with
 graphic support, there will be error info as below:
 -----------ERROR--------------
-ERROR: imx-gpu-viv-1_6.2.2.p0-aarch32-r0 do_unpack: To use 'imx-gpu-viv' you need to accept the Freescale EULA at 'path_to_WRLinux_product/layers/meta-freescale/EULA'. Please read it and in case you accept it, write: ACCEPT_FSL_EULA = "1" in your local.conf.
+ERROR: imx-gpu-viv_6.4.0.p1.0-aarch32 do_unpack: To use 'imx-gpu-viv' you need to accept the Freescale EULA at 'path_to_WRLinux_product/layers/meta-freescale/EULA'. Please read it and in case you accept it, write: ACCEPT_FSL_EULA = "1" in your local.conf.
 ------------------------------
 Please read the Freescale EULA file carefully, in case you accept it, write:
 ACCEPT_FSL_EULA = "1" to your local.conf file to continue the building.
@@ -423,10 +420,10 @@ for I.MX6SX:
 for I.MX6Q:
     crashkernel=512M@400M
 for I.MX6SX:
-    crashkernel=400M@2204M
+    crashkernel=380M@2230M
 
 For the dump-capture kernel:
-Before booting the dump-capture kernel, add "maxcpus=1 cma=16M" to the boot parameter.
+Before booting the dump-capture kernel, add "maxcpus=1" to the boot parameter.
 NOTE: Use zImage as a secondary kernel. It can be found in the
 tmp-glibc/deploy/images/nxp-imx6/ directory.
 
