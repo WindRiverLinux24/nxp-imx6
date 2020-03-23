@@ -522,8 +522,9 @@ file_copy recipes-kernel/linux/linux-imx-headers-4.9.123/0001-uapi-Install-custo
 SOURCE_DIR=$GRAPHIC_SRC/meta-fsl-bsp-release/imx/meta-bsp/
 file_copy recipes-kernel/linux/linux-imx-headers_4.19.35.bb
 
-SOURCE_DIR=$GRAPHIC_SRC/meta-freescale/
-file_copy EULA
+SOURCE_DIR=$GRAPHIC_SRC/meta-fsl-bsp-release/imx/
+file_copy EULA.txt
+mv $GRAPHIC_DTS/imx6-graphic/EULA.txt $GRAPHIC_DTS/imx6-graphic/EULA
 
 echo "\nGraphic layer is generated successfully!"
 clean_up && exit 1
