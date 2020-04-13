@@ -78,10 +78,10 @@ while getopts "s:d:h" fsl_setup_flag
 do
     case $fsl_setup_flag in
         s) GRAPHIC_SRC="$OPTARG";
-           echo "\n Graphic source directory is " $GRAPHIC_SRC
+           echo "Graphic source directory is " $GRAPHIC_SRC
            ;;
         d) GRAPHIC_DTS="$OPTARG";
-           echo "\n Graphic destination directory is " $GRAPHIC_DTS
+           echo "Graphic destination directory is " $GRAPHIC_DTS
            ;;
         h) fsl_setup_help='true';
            ;;
@@ -526,5 +526,5 @@ SOURCE_DIR=$GRAPHIC_SRC/meta-fsl-bsp-release/imx/
 file_copy EULA.txt
 mv $GRAPHIC_DTS/imx6-graphic/EULA.txt $GRAPHIC_DTS/imx6-graphic/EULA
 
-echo "\nGraphic layer is generated successfully!"
+echo "Graphic layer is generated successfully!"
 clean_up && exit 1
