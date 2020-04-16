@@ -1,4 +1,4 @@
-i.MX6Q Sabre SD/i.MX6 UltraLite 14x14 EVK Board Support Package
+i.MX6Q Sabre SD/i.MX6SX SABRE-SD Board Support Package
 
 
 Table of Contents
@@ -18,8 +18,6 @@ This BSP supports the following boards:
 			 CPU: PCIMX6Q6AVT10AC SBAE1234
    + I.MX6SX SABRE-SDB : Board: Freescale SABRE SD, SCH-27962 REV C, 700-27962 REV A2.
 			 CPU: PCIMX6X4EVN10AB P6P530W7
-   + I.MX6 UltraLite   : Board: Freescale UltraLite EVK REV C2 SCH-28616 700-28616 REV C
-			 CPU: PCIMX6G2CVM05AA CTAE1545
 
 2. Change History
 =================
@@ -50,26 +48,25 @@ This BSP supports the following features.
 
   o USB
 	+ USB OTG: On-Chip UTMI transceiver, high/full/low speed
-	+ USB Host: 3 EHCI compatible host controller in the chip (IMX6SX and IMX6UL only)
+	+ USB Host: 3 EHCI compatible host controller in the chip (IMX6SX only)
 
   o Storage
 	+ SD/MMC: On-Chip ultra secured digital host controller (uSDHC)
 	+ eMMC: On-chip embedded multimediacard, 1bit/4bit/8bit SDR/DDR mode (IMX6Q SABRE-SD only)
 	+ NOR Flash: 4MB M25P32 SPI NOR Flash (IMX6Q SABRE-SD only)
-	             32MB N25Q256A QSPI NOR Flash (IMX6SX and IMX6UL only)
+	             32MB N25Q256A QSPI NOR Flash (IMX6SX only)
 	+ SATA: On-Chip AHCI SATA controller (IMX6Q SABRE-SD only)
 
   o User_Interface_Multimedia
 	+ AUDIO:
 		+ HDMI codec (IMX6Q SABRE-SD only)
 		+ WM8962 codec
-		+ WM8960 codec (IMX6UL only)
 
 	+ Touchscreen: EGALAX touchscreen controller connected via i2C
 	+ LVDS: On-Chip LVDS display bridge (LDB) will be used to connect the IPU to external
 		LVDS display interface, HannStar HSD100PXN1-A TFT LCD with XGA resolution, Framebuffer support
 	+ Backlight
-	+ HDMI: On-Chip HDMI controller (IMX6Q and IMX6UL only)
+	+ HDMI: On-Chip HDMI controller (IMX6Q only)
 	+ IPU: On-Chip image processing unit(IMX6Q and IMX6SX only)
 	+ VPU: On-Chip video processing unit (VPU) is the multi-media video processing block (IMX6Q SABRE-SD only)
 	+ V4L2 Output: The V4L2 output driver uses the IPU post-processing functions for video output.(IMX6Q and IMX6SX only)
@@ -165,7 +162,7 @@ to update u-boot.
 -----------------------
 
 4.3.1 IMX6Q SABRE-SD (SCH-27392 REV C4, 700-27392 REV C)
---------------------------------------------------
+-------------------------------------------------------
 
 1. Booting from SD card from Slot2
 
@@ -195,3 +192,25 @@ besides the LVDS1 connection on the back of the board.
 
 Switch	D1   D2   D3   D4   D5   D6   D7   D8
 SW6		ON   ON   OFF  ON   OFF  ON   ON   OFF
+
+4.3.2 IMX6SX SABRE-SD (SCH-27962 REV C, 700-27962 REV A2)
+--------------------------------------------------------
+
+1. Booting from SD card, Slot2 SD4
+
+The following table describes the dip switch settings for booting from an SD card in slot SD4.
+The SD4 slot is on the center of the edge of the SoloX board.
+
+Switch	D1   D2   D3   D4   D5   D6   D7   D8
+SW10	OFF  OFF  OFF  OFF  OFF  OFF  OFF  OFF
+SW11	OFF  OFF  ON   ON   ON   OFF  OFF  OFF
+SW12	OFF  ON   OFF  OFF  OFF  OFF  OFF  OFF
+
+2. Booting from QuadSPI
+
+The following tables list the DIP switch settings for booting from QuadSPI.
+
+Switch	D1   D2   D3   D4   D5   D6   D7   D8
+SW10 	OFF  OFF  OFF  OFF  OFF  OFF  OFF  OFF
+SW11 	OFF  OFF  OFF  OFF  OFF  OFF  OFF  OFF
+SW12 	OFF  OFF  OFF  ON   ON   OFF  OFF  OFF
