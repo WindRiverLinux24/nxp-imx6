@@ -1,4 +1,4 @@
-        i.MX6Q Sabre-SD/i.MX6SX Sabre-SDB/i.MX6 UltraLite 14x14 EVK Board Support Package
+        i.MX6Q Sabre-SD/i.MX6SX Sabre-SDB Board Support Package
 
 1. About this document
 ======================
@@ -173,8 +173,7 @@ commands:
 5.3 V4L2 output/capture and camera
 ----------------------------------
 
-Enable HDMI as the default fbdev as stated in section 5.1, above, then execute
-the following commands:
+Enable HDMI or LCD as the default fbdev, and then execute the following commands:
 
 	# cd /unit_tests/V4L2
 	# ./mxc_v4l2_overlay.out -iw 640 -ih 480 -ow 640 -oh 480 -m 0 -di /dev/video1 -fg
