@@ -236,11 +236,11 @@ Play the recorded audio messages:
 	# aplay -Dhw:1,0 record.wav
 
 Note:
-On imx6sx platform, it is need to used version 3.4 sdma firmware for supporting
+On imx6sx platform, ersion 3.4 sdma firmware is needed for supporting
 audio feature. In wrlinux project, the sdma firmware version is 3.3, so
-it is need to copy version 3.4 sdma firmware from SDK rootfs.
+it is needed to copy version 3.4 sdma firmware from SDK rootfs.
 On imx6q platform, audio feature works fine based on version 3.3 sdma firmware.
-But it is recommend customer to use version 3.4 sdma firmware.
+But it is recommended that customer use version 3.4 sdma firmware.
 
 5.6 Static PM
 -------------
@@ -308,7 +308,7 @@ Built and install them:
 	# bitbake wrlinux-image-<std/std-sato>
 
 Copy relevant WiFi card firmware (Intel 6205 WiFi firmware: iwlwifi-6000g2a-5.ucode)
-of to /lib/firmware of the target image.
+to /lib/firmware of the target image.
 
 Execute the following commands to validate the WiFi cards:
 
@@ -336,17 +336,17 @@ Setup environment and create a build directory:
 	# bitbake wrlinux-image-std-sato
 
 Generate imx6 graphic layer:
-Because of the licesen issue, nxp-imx6 layer doesn't integrate imx6's GPU or VPU
+Because of the licensing issue, nxp-imx6 layer doesn't integrate imx6's GPU or VPU
 hardware acceleration related packages into WRlinux product. So, if customer wants
 to run hardware graphic feature, please generate graphic with script scripts/generate-graphic-layer.sh.
-Detail steps as below:
+Detailed steps as below:
 <1>. Download SDK package(L4.19.35_1.1.0_MX6QDLSOLOX) with below command
 	# mkdir imx-yocto-bsp
 	# cd imx-yocto-bsp
 	# repo init -u https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-warrior -m imx-4.19.35-1.1.0.xml
 	# repo sync
 
-<2>. Run script scripts/generate-graphic-layer.sh and input correct parameter
+<2>. Run scripts/generate-graphic-layer.sh script and set correct command-line options
 	# ./generate-graphic-layer.sh -h
 	 Usage: source generate-graphic-layer.sh
 	    Optional parameters: [-s source-dir] [-d destination-dir] [-h]
@@ -355,7 +355,7 @@ Detail steps as below:
 	    * [-d destination-dir]: Destination directory where the graphic will be merged into
 	    * [-h]: help
 
-	# ./generate-graphic-layer.sh -s <nxp-sdk download directory>/imx-yocto-bsp/sources -d <wrlinux project directory>/layer/nxp-imx6/
+	# ./generate-graphic-layer.sh -s <nxp-sdk download directory>/imx-yocto-bsp/sources -d <wrlinux project directory>/layers/nxp-imx6/
 
 <3> Read WARNING information carefully, and then input 'y' if you want to generate imx6 graphic layer
 
@@ -374,8 +374,8 @@ internet. Change BB_NO_NETWORK ?= "1" to BB_NO_NETWORK ?= "0" in the file
 ${buildprj}/conf/local.conf.
 
 2. Since some packages which are used to support the graphic feature in
-nxp-imx6 is provided via binaries, when you build a nxp-imx6 project with
-graphic support, there will be error info as below:
+nxp-imx6 are provided via binaries, when a nxp-imx6 project with
+graphic support is built, there will be error info as below:
 -----------ERROR--------------
 ERROR: imx-gpu-viv_6.4.0.p1.0-aarch32 do_unpack: To use 'imx-gpu-viv' you need to accept the Freescale EULA at 'path_to_WRLinux_product/layers/meta-freescale/EULA'. Please read it and in case you accept it, write: ACCEPT_FSL_EULA = "1" in your local.conf.
 ------------------------------
@@ -440,7 +440,7 @@ User can refer to the below URL to get more WIC details:
 https://www.yoctoproject.org/docs/2.6/mega-manual/mega-manual.html#creating-partitioned-images-using-wic
 
 This BSP supports disk images for SD card.
-After build the project, user will get a WIC image under the directory
+After building the project, user will get a WIC image under the directory
 tmp-glibc/deploy/images/<bsp name>/ ,such as:
 
 tmp-glibc/deploy/images/nxp-imx6/wrlinux-image-glibc-std-sato-nxp-imx6-imx6q.wic
