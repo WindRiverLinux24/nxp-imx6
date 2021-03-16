@@ -50,6 +50,13 @@ please read EULA carefully firstly.
 WindRiver doesn't support imx6's GPU or VPU hardware acceleration feature in product
 release. Customers who want to enable graphic hardware acceleration feature need to
 run this script on their own PC to generate imx6-graphic layer.
+
+<1>. Download SDK package(L4.19.35_1.1.0_MX6QDLSOLOX) with below command
+# mkdir imx-yocto-bsp;cd imx-yocto-bsp
+# repo init -u https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-warrior -m imx-4.19.35-1.1.0.xml
+# repo sync
+<2>. Run script scripts/generate-graphic-layer.sh and input correct parameter
+# ./generate-graphic-layer.sh -s <nxp-sdk download directory>/imx-yocto-bsp/sources -d <wrlinux project directory>/layer/nxp-imx6/
 EOF
 
 echo
@@ -130,7 +137,7 @@ INHERIT += "machine-overrides-extender"
 MACHINEOVERRIDES_EXTENDER_nxp-imx6   = "imx:imxfbdev:imxipu:imxvpu:imxvpucnm:imxgpu:imxgpu2d:imxgpu3d"
 MACHINE_SOCARCH = "nxp_imx6"
 
-IMAGE_INSTALL_append += "assimp devil imx-gpu-viv xf86-video-imx-vivante imx-gpu-g2d imx-gpu-apitrace imx-gpu-sdk imx-lib imx-vpu imx-gpu-viv-demos"
+IMAGE_INSTALL_append_nxp-imx6 += "assimp devil imx-gpu-viv xf86-video-imx-vivante imx-gpu-g2d imx-gpu-apitrace imx-gpu-sdk imx-lib imx-vpu imx-gpu-viv-demos"
 BANNER[nxp-imx6_default] = "The nxp-imx6 layer includes third party components, where additional third party licenses may apply."
 
 IMX_MIRROR ?= "https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/"
@@ -527,4 +534,4 @@ file_copy EULA.txt
 mv $GRAPHIC_DTS/imx6-graphic/EULA.txt $GRAPHIC_DTS/imx6-graphic/EULA
 
 echo "Graphic layer is generated successfully!"
-clean_up && exit 1
+clean_up && exit 0
