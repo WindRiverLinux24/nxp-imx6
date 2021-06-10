@@ -1,4 +1,4 @@
-        i.MX6Q Sabre-SD/i.MX6SX Sabre-SDB Board Support Package
+	 i.MX6 UltraLite 14x14 EVK Board Support Package
 
 1. About this document
 ======================
@@ -24,7 +24,7 @@ is done automatically when using the Wind River configure wrapper.
 
 License
 -------
-Copyright (C) 2020 Wind River Systems, Inc.
+Copyright (C) 2021 Wind River Systems, Inc.
 
 Source code included in the tree for individual recipes is under the LICENSE
 stated in the associated recipe (.bb file) unless otherwise stated.
@@ -82,7 +82,7 @@ kernel (git whatchanged <kernel_type>..<bsp_name>). For example:
 
 4.1 MMC/SD Boot
 ---------------
-Please refer to section 7 "Creating Partitioned Images(WIC)" in this document to
+Please refer to section 6 "Creating Partitioned Images(WIC)" in this document to
 make a bootable MMC/SD card.
 
 4.2 NFS Root File System
@@ -95,30 +95,17 @@ and are copied to the export directory of the TFTP server.
 
 4.2.2 Download kernel
 ---------------------
-
-	For i.MX6Q/S:
-	# tftp 0x12000000 zImage
 	For i.MX6 UltraLite:
 	# tftpboot 0x80800000 zImage
 
 4.2.3 Download DTB
 ------------------
-
-	For i.MX6Q/S:
-	# tftp 0x18000000 zImage-imx6q-sabresd.dtb
 	For i.MX6 UltraLite:
 	tftpboot 0x83000000 imx6ul-14x14-evk.dtb
 
 4.2.4 Set bootargs and boot the system
 --------------------------------------
-
-	For i.MX6Q:
-	# setenv bootargs console=ttymxc0,115200 root=/dev/nfs rw \
-		 nfsroot=<nfs server>:<nfs root>,v3,tcp \
-		 ip=<target IP>::<gateway>:<netmask>::eth0:off \
-		 video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666
-	# bootz 0x12000000 - 0x18000000
-	For i.MX6 UltraLite/Solox:
+	For i.MX6 UltraLite:
 	# setenv bootargs console=ttymxc0,115200 root=/dev/nfs rw \
                  nfsroot=<nfs server>:<nfs root>,v3,tcp \
                  ip=<target IP>::<gateway>:<netmask>::eth0:off \
@@ -126,130 +113,14 @@ and are copied to the export directory of the TFTP server.
 
 5. Features
 ===========
-
-Some peripherals and drivers have been tested using the libraries and testcases
-in the imx-lib and imx-test packages. These two packages are included in the 
-Freescale SDK.  You can build them under the Freescale openembedded-core layer of the
-meta-fsl-arm environment. Please reference https://github.com/Freescale/meta-fsl-arm
-for build details.  
-
-After the build completes: 
-
-* all testcases are installed to ${fsl_target_rootfs}/unit_tests, 
-* all needed libs are installed to ${fsl_target_rootfs}/usr/lib, 
-* all needed firmware is installed to ${fsl_target_rootfs}/lib/firmware/vpu, 
-  where fsl_target_rootfs parameter points to the path of the root filesystem after 
-  building the freescale SDK.
-
-Copy the testcases to the image of the i.MX6Q Board: (assuming the target
-image has been properly deployed to an MMC/SD card as in described in section 3.2):
-
-	# cp ${fsl_target_rootfs}/unit_tests /mnt/sd -rf
-	# cp ${fsl_target_rootfs}/usr/lib/libvpu.* /mnt/sd/usr/lib/ -rf
-	# cp ${fsl_target_rootfs}/usr/lib/libipu.* /mnt/sd/usr/lib/ -rf
-	# cp ${fsl_target_rootfs}/lib/firmware/vpu /mnt/sd/lib/firmware/ -rf
-	# umount /mnt/sd
-
-
-5.1 fbdev HDMI
---------------
-
-To enable HDMI as the default framebuffer device, add:
-
-	video=mxcfb0:dev=hdmi,1920x1080M@60,if=RGB24
-
-to the bootargs parameter of U-Boot.
-
-5.2 VPU
--------
-
-To test VPU support, ensure that the HDMI is the default fbdev. Please refer to 
-section 5.1, above, to set the bootargs of U-Boot, then execute the following 
-commands:
-
-	# cd /unit_tests/VPU
-	# ./mxc_vpu_test.out -D "-i ./akiyo.mp4 -f 0 -t 1"
-
-5.3 V4L2 output/capture and camera
-----------------------------------
-
-Enable HDMI or LCD as the default fbdev, and then execute the following commands:
-
-	# cd /unit_tests/V4L2
-	# ./mxc_v4l2_overlay.out -iw 640 -ih 480 -ow 640 -oh 480 -m 0 -di /dev/video1 -fg
-
-5.4 USB feature
----------------
-
-5.4.1 USB OTG Usage and verification
-------------------------------------
-
-1. Verify the OTG device mode
-
-Plug in cable B and connect to the host machine.
-
-Board configuration:
-
-	# ifconfig usb0 192.168.1.10
-
-Host machine configuration:
-
-	# sudo ifconfig usb0 192.168.1.100
-	# ping 192.168.1.10 -c 2
-	PING 192.168.1.10 (192.168.1.10) 56(84) bytes of data.
-	64 bytes from 192.168.1.10: icmp_req=1 ttl=64 time=2.06 ms
-	64 bytes from 192.168.1.10: icmp_req=2 ttl=64 time=0.286 ms
-	...
-
-2. Switch to OTG host mode
-
-Replace cable B with cable A.
-
-
-5.5 Audio
----------
-
-5.5.1 Audio capture and playback(WM8962)
-----------------------------------------
-
-1. Capture
-
-Set the parameters to assign the codec and then record an audio message:
-
-	For i.MX6Q/S:
-	# amixer set 'MIXINR IN3R' on
-	# amixer set 'INPGAR IN3R' on
-
-2. Playback
-
-	For i.MX6Q/S:
-	# amixer cset name='Headphone Volume' 127
-
-5.5.2 Audio HDMI playback
--------------------------
-
-Connect the board to an HDMI display with an HDMI cable,
-then enable fbdev HDMI as in section 5.1, above.
-
-Play the recorded audio messages:
-
-	# aplay -Dhw:1,0 record.wav
-
-Note:
-On imx6sx platform, ersion 3.4 sdma firmware is needed for supporting
-audio feature. In wrlinux project, the sdma firmware version is 3.3, so
-it is needed to copy version 3.4 sdma firmware from SDK rootfs.
-On imx6q platform, audio feature works fine based on version 3.3 sdma firmware.
-But it is recommended that customer use version 3.4 sdma firmware.
-
-5.6 Static PM
+5.1 Static PM
 -------------
 
 The debug UART can be set as a wakeup source with:
 	# echo enabled > /sys/class/tty/ttymxc0/power/wakeup
 	# echo mem > /sys/power/state
 
-5.7 CPU frequency
+5.2 CPU frequency
 ------------------
 
 CPU frequency scaling allows the clock speed of the CPU to be changed on the fly.
@@ -257,179 +128,20 @@ CPU frequency scaling allows the clock speed of the CPU to be changed on the fly
 	# echo powersave > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 	# cat /proc/cpuinfo
 
-5.8 Backlight
---------------
-
-	# echo 0 > /sys/class/backlight/backlight/brightness
-
-5.9 ANATOP thermal
+5.3 ANATOP thermal
 -------------------
 
 	To check current CPU temperature
 	# cd /sys/class/thermal/thermal_zone0
 	# cat temp
-	39445
+	39821
 	# cat trip_point_0_type
 	passive
 	# cat trip_point_0_temp
-	85000
+	95000
 
-5.10 Touch Screen
------------------
 
-	# mtdev-test /dev/input/event0
-
-5.11 PCIe
---------
-
-Since the on-board PCIe connector only exports the PETP0/N0, PERP0/N0 and 3.3V
-pins, any mini-PCIe devices that use other PCIe pins are not supported.
-The following PCIe peripherals:
-
-	Intel Centrino Advanced-N 6205
-	Intel Centrino Wireless-N 1030
-
-can be validated using the following steps:
-
-Simply add line as follows to ${buildprj}/build/conf/local.conf:
-
-	KERNEL_FEATURES_append = " features/iwlwifi/iwlwifi.scc"
-
-Include the following lines in your local.conf:
-
-	LINUX_KERNEL_TYPE = "standard"
-	KERNEL_FEATURES_append = " features/iwlwifi/iwlwifi.scc"
-
-This will include the iwlwifi and mac80211 kernel modules in
-the root filesystem.
-
-Built and install them:
-
-	# bitbake wrlinux-image-<std/std-sato>
-
-Copy relevant WiFi card firmware (Intel 6205 WiFi firmware: iwlwifi-6000g2a-5.ucode)
-to /lib/firmware of the target image.
-
-Execute the following commands to validate the WiFi cards:
-
-	# ifconfig wlan0 up
-	# iwconfig wlan0 essid <AP essid>
-	# dhclient wlan0
-	# ping <AP address> -i wlan0 -c 1
-
-NOTE: the PCIe driver does not support hotplug and suspend/resume.
-
-5.12 Graphics/GPU
------------------
-
-If you want to build a project with i.mx6 GPU graphic support, please
-follow the steps as below:
-
-Create a project directory, and then setup project with the following arguments:
-
-	--machines nxp-imx6 --distros wrlinux-graphics --dl-layers
-
-Setup environment and create a build directory:
-
-	# . environment-setup-<host>-wrlinuxsdk-linux
-	# . oe-init-build-env <build>
-	# bitbake wrlinux-image-std-sato
-
-Generate imx6 graphic layer:
-Because of the licensing issue, nxp-imx6 layer doesn't integrate imx6's GPU or VPU
-hardware acceleration related packages into WRlinux product. So, if customer wants
-to run hardware graphic feature, please generate graphic with script scripts/generate-graphic-layer.sh.
-Detailed steps as below:
-<1>. Download SDK package(L4.19.35_1.1.0_MX6QDLSOLOX) with below command
-	# mkdir imx-yocto-bsp
-	# cd imx-yocto-bsp
-	# repo init -u https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-warrior -m imx-4.19.35-1.1.0.xml
-	# repo sync
-
-<2>. Run scripts/generate-graphic-layer.sh script and set correct command-line options
-	# ./generate-graphic-layer.sh -h
-	 Usage: source generate-graphic-layer.sh
-	    Optional parameters: [-s source-dir] [-d destination-dir] [-h]
-
-	    * [-s source-dir]: Source directory where the graphic layer come from
-	    * [-d destination-dir]: Destination directory where the graphic will be merged into
-	    * [-h]: help
-
-	# ./generate-graphic-layer.sh -s <nxp-sdk download directory>/imx-yocto-bsp/sources -d <wrlinux project directory>/layers/nxp-imx6/
-
-<3> Read WARNING information carefully, and then input 'y' if you want to generate imx6 graphic layer
-
-Use the command as below to add i.mx6 GPU graphic layer:
-
-	bitbake-layers add-layer path_to_WRLinux_product/layers/nxp-imx6/imx6-graphic
-
-Use the command as below to build rootfs:
-
-	bitbake wrlinux-image-std-sato
-
-NOTE:
-
-1. You must change the configuration to allow downloading of packages from the
-internet. Change BB_NO_NETWORK ?= "1" to BB_NO_NETWORK ?= "0" in the file
-${buildprj}/conf/local.conf.
-
-2. Since some packages which are used to support the graphic feature in
-nxp-imx6 are provided via binaries, when a nxp-imx6 project with
-graphic support is built, there will be error info as below:
------------ERROR--------------
-ERROR: imx-gpu-viv_6.4.0.p1.0-aarch32 do_unpack: To use 'imx-gpu-viv' you need to accept the Freescale EULA at 'path_to_WRLinux_product/layers/meta-freescale/EULA'. Please read it and in case you accept it, write: ACCEPT_FSL_EULA = "1" in your local.conf.
-------------------------------
-Please read the Freescale EULA file carefully, in case you accept it, write:
-ACCEPT_FSL_EULA = "1" to your local.conf file to continue the building.
-
-5.13 Tune
------------------
-This BSP uses "armv7athf-neon" as the default tune. It supports both
-cortexa9 and cortexa7, but may not have the best optimization. If you use
-this BSP for the boards "i.MX 6Quad SABRE-SD" and "i.MX 6SoloX SABRE-SD", and
-want better optimization from tune, change DEFAULTTUNE from "armv7athf-neon" 
-to "cortexa9thf-neon" locally in ${projectdir}/conf/local.conf.
-
-6. kexec/kdump
-==============
-
-For discussion purposes, some useful terminology will be described here.
-
-* boot kernel - the first kernel that you start and supports kexec, from U-Boot
-	      for instance
-* capture kernel - the kernel that you reboot into after a boot kernel crash
-
-To build the boot kernel, enable kexec and kdump in your local.conf file:
-
-	WRTEMPLATE = "feature/kexec feature/kdump"	
-
-6.1 kdump
----------
-
-For the boot kernel:
-To reserve a memory region for the capture kernel, you need to pass the bootargs 
-argument "crashkernel" to the boot kernel as follow:
- - Without graphic hardware accelerator
-for I.MX6Q:
-    crashkernel=256M@512M
-for I.MX6SX:
-    crashkernel=256M@2304M
-
- - With graphic hardware accelerator
-for I.MX6Q:
-    crashkernel=512M@400M
-for I.MX6SX:
-    crashkernel=380M@2230M
-
-For the dump-capture kernel:
-Before booting the dump-capture kernel, add "maxcpus=1" to the boot parameter.
-NOTE: Use zImage as a secondary kernel. It can be found in the
-tmp-glibc/deploy/images/nxp-imx6/ directory.
-
-For more detailed info about kdump, refer to Documentation/kdump/kdump.txt
-in the kernel source tree.
-
-7. Creating Partitioned Images(WIC)
+6. Creating Partitioned Images(WIC)
 ===================================
 
 User can use the OpenEmbedded Image Creator, wic, to create the properly
@@ -443,9 +155,7 @@ This BSP supports disk images for SD card.
 After building the project, user will get a WIC image under the directory
 tmp-glibc/deploy/images/<bsp name>/ ,such as:
 
-tmp-glibc/deploy/images/nxp-imx6/wrlinux-image-glibc-std-sato-nxp-imx6-imx6q.wic
-tmp-glibc/deploy/images/nxp-imx6/wrlinux-image-glibc-std-sato-nxp-imx6-imx6sx.wic
-tmp-glibc/deploy/images/nxp-imx6/wrlinux-image-glibc-std-nxp-imx6-imx6ul.wic
+tmp-glibc/deploy/images/nxp-imx6/wrlinux-image-std-nxp-imx6.wic
 
 Then user can write the output image to a SD card:
 
@@ -457,47 +167,16 @@ image to SD card directly by "dd" command.
 --------------------------
 
 To burn uboot and WIC images to SD card, user need to execute command:
-
-For i.mx6q:
-# dd if=wrlinux-image-glibc-std-sato-nxp-imx6-imx6q.wic of=/dev/your_sd_dev
-
-For i.mx6sx:
-# dd if=wrlinux-image-glibc-std-sato-nxp-imx6-imx6sx.wic of=/dev/your_sd_dev
-# dd if=wrlinux-image-glibc-std-sato-nxp-imx6-imx6sx.wic of=/dev/your_sd_dev
 For i.mx6ul:
-# dd if=wrlinux-image-glibc-std-nxp-imx6-imx6ul.wic of=/dev/your_sd_dev
+# dd if=wrlinux-image-std-nxp-imx6.wic of=/dev/your_sd_dev
 
 7.2 Set uboot env
 -----------------
 
 Board can boot automatically by set the below uboot environment variables:
 
-For i.mx6q:
-
-=> setenv bootfile zImage; setenv fdtfile imx6q-sabresd.dtb;  setenv loadaddr 0x12000000; setenv fdtaddr 0x18000000;
-
-=> setenv bootargs 'root=/dev/mmcblk1p2 rw rootdelay=5 console=ttymxc0,115200n8'
-
-=> setenv bootcmd 'fatload mmc 1:1 $loadaddr $bootfile; fatload mmc 1:1 $fdtaddr $fdtfile; bootz $loadaddr - $fdtaddr';
-
-=> saveenv; run bootcmd;
-
-For i.mx6sx
-
-=> setenv bootfile zImage; setenv fdtfile imx6sx-sdb.dtb;  setenv loadaddr 0x80800000; setenv fdtaddr 0x83000000;
-
-=> setenv bootargs 'root=/dev/mmcblk2p2 rw rootdelay=5 console=ttymxc0,115200n8'
-
-=> setenv bootcmd 'fatload mmc 2:1 $loadaddr $bootfile; fatload mmc 2:1 $fdtaddr $fdtfile; bootz $loadaddr - $fdtaddr';
-
-=> saveenv; run bootcmd;
-
 For i.mx6ul
-
 => setenv bootfile zImage; setenv fdtfile imx6ul-14x14-evk.dtb;  setenv loadaddr 0x80800000; setenv fdtaddr 0x83000000;
-
-=> setenv bootargs 'root=/dev/mmcblk2p2 rw rootdelay=5 console=ttymxc0,115200n8'
-
-=> setenv bootcmd 'fatload mmc 2:1 $loadaddr $bootfile; fatload mmc 2:1 $fdtaddr $fdtfile; bootz $loadaddr - $fdtaddr';
-
+=> setenv bootargs 'root=/dev/mmcblk0p2 rw rootdelay=5 console=ttymxc0,115200n8'
+=> setenv bootcmd 'fatload mmc 0:1 $loadaddr $bootfile; fatload mmc 0:1 $fdtaddr $fdtfile; bootz $loadaddr - $fdtaddr';
 => saveenv; run bootcmd;
