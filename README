@@ -170,6 +170,11 @@ To burn uboot and WIC images to SD card, user need to execute command:
 For i.mx6ul:
 # dd if=wrlinux-image-std-nxp-imx6.wic of=/dev/your_sd_dev
 
+Prepare the bootloader image, user can get it from www.nxp.com
+# dd if=u-boot-imx6ul14x14evk_sd.imx of=/dev/your_sd_dev bs=1k seek=<x> conv=fsync
+
+Note: seek = "1"
+
 7.2 Set uboot env
 -----------------
 
@@ -177,6 +182,6 @@ Board can boot automatically by set the below uboot environment variables:
 
 For i.mx6ul
 => setenv bootfile zImage; setenv fdtfile imx6ul-14x14-evk.dtb;  setenv loadaddr 0x80800000; setenv fdtaddr 0x83000000;
-=> setenv bootargs 'root=/dev/mmcblk0p2 rw rootdelay=5 console=ttymxc0,115200n8'
+=> setenv bootargs 'root=/dev/mmcblk1p2 rw rootdelay=5 console=ttymxc0,115200n8'
 => setenv bootcmd 'fatload mmc 0:1 $loadaddr $bootfile; fatload mmc 0:1 $fdtaddr $fdtfile; bootz $loadaddr - $fdtaddr';
 => saveenv; run bootcmd;
