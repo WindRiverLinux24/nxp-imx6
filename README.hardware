@@ -34,32 +34,15 @@ This BSP supports the following features.
   o General Platform
 	+ perf
 
-  o Bus
-	+ I2C: On-Chip I2C controller
-	+ SPI: Freescale ECSPI bus controller in master mode
-
   o Network
 	+ Ethernet: FEC 10/100/1000 MAC ethernet controller, KSZ9021 external PHY
-	+ IEEE 1588: based on FEC controller
 
   o USB
-	+ USB OTG: On-Chip UTMI transceiver, high/full/low speed
 	+ USB Host: 3 EHCI compatible host controller in the chip
 
   o Storage
 	+ SD/MMC: On-Chip ultra secured digital host controller (uSDHC)
 	+ NOR Flash: 32MB N25Q256A QSPI NOR Flash
-
-  o User_Interface_Multimedia
-	+ AUDIO:
-		+ WM8960 codec
-
-	+ Touchscreen: EGALAX touchscreen controller connected via i2C
-	+ LVDS: On-Chip LVDS display bridge (LDB) will be used to connect the IPU to external
-		LVDS display interface, HannStar HSD100PXN1-A TFT LCD with XGA resolution, Framebuffer support
-	+ Backlight
-	+ HDMI: On-Chip HDMI controller
-	+ Camera: OV5642 chip
 
   o Power Mgmt
 	+ Suspend to RAM
@@ -68,31 +51,10 @@ This BSP supports the following features.
 
   o Misc Devices
 	+ UART: On-Chip High-Speed UART
-	+ Watchdog: On-Chip H/W watchdog timer
-	+ GPIO: On-Chip general purpose Input/Output
-	+ RTC: On-Chip secure real time clock
 	+ Sensors: On-Chip temperature sensor
 	+ Power Regulator: ANATOP PMIC power regulator
-	+ SDMA: On-Chip smart direct memory access controller
-	+ PWM: Pulse width modulator
-	+ CAAM (security engine)
 
-3.2 Limited Supported Features
-==============================
-
-	* Graphics/GPU driver (GC2000, GC880, GC355 and GC320)
-	* Graphics/userspace libs (OpenGL ES, EGL and OpenVG)
-
-NOTE: WR offers limited support for these Graphics capabilities under the
-specific conditions we have performed validation and testing for. There is
-only GPU driver source code in kernel tree. About userspace libs, because of
-license limitation, there is no source code supplied by WR. If you need deeper
-support, please connect with NXP to get authorization for userspace libs
-source code firstly, and then contact WR Sales team to engage WR Professional
-Services who can work with you to discuss and customize support for your deeper
-graphics requirements.
-
-3.3 Unsupported Features
+3.2 Unsupported Features
 ========================
 
 The following features are not supported and validated:
@@ -108,6 +70,15 @@ The following features are not supported and validated:
         x LVDS
         x Backlight
         x USB OTG
+        x CAAM
+        x PWM
+        x SDMA
+        x RTC
+        x GPIO
+        x Watchdog
+        x IEEE 1588
+        x SPI
+        x I2C
 
 4. BSP Notes
 ============
