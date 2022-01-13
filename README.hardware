@@ -20,8 +20,8 @@ This BSP supports the following boards:
 2. Change History
 =================
 
-  - 2021/06 (LINUXPG-787): Wind River Linux10.21 RCPL01, support i.MX6 UltraLite 14x14 EVK
-						board based on v5.10/standard/base.
+  - 2022/01 (LINUXPG-1048): Wind River Linux10.21 RCPL10, support i.MX6 UltraLite 14x14 EVK
+						board based on v5.10/standard/nxp-sdk-5.10/nxp-soc.
 
 3. BSP Features
 ===============
@@ -54,31 +54,25 @@ This BSP supports the following features.
 	+ Sensors: On-Chip temperature sensor
 	+ Power Regulator: ANATOP PMIC power regulator
 
-3.2 Unsupported Features
-========================
+  o User_Interface_Multimedia
+        + AUDIO:
+                + WM8960 codec (IMX6UL only)
 
-The following features are not supported and validated:
+  o Power Mgmt
+        + Suspend to RAM
+        + CPU Freq
+        + Bus Freq
+        + CPU idle (Only state0 and state1 are supported by IMX6Q SABRE-SD)
 
-	x ESAI card
-	x SPDIF codec
-	x ASRC
-	x Keypad
-        x HDMI
-        x AUDIO
-        x Touchscreen
-        x Camera
-        x LVDS
-        x Backlight
-        x USB OTG
-        x CAAM
-        x PWM
-        x SDMA
-        x RTC
-        x GPIO
-        x Watchdog
-        x IEEE 1588
-        x SPI
-        x I2C
+  o Misc Devices
+        + UART: On-Chip High-Speed UART
+        + Watchdog: On-Chip H/W watchdog timer
+        + GPIO: On-Chip general purpose Input/Output
+        + RTC: On-Chip secure real time clock
+        + Sensors: On-Chip temperature sensor
+        + Power Regulator: ANATOP PMIC power regulator
+        + SDMA: On-Chip smart direct memory access controller
+        + PWM: Pulse width modulator
 
 4. BSP Notes
 ============
@@ -100,4 +94,4 @@ IMX6 UltraLite 14x14 EVK:
         CPU Revision:          rev1.0
         Board Revision:        Freescale UltraLite EVK REV C2 SCH-28616 700-28616 REV C
         BootLoader:            U-Boot
-        BootLoader Version:    U-Boot 2020.04-5.10.9-1.0.0+gad7b74b415 (Mar 05 2021 - 07:05:56 +0000)
+        BootLoader Version:    U-Boot 2021.04-lf_v2021.04+g1c0116f3da (Sep 06 2021 - 08:48:23 +0000)
