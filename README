@@ -140,6 +140,39 @@ CPU frequency scaling allows the clock speed of the CPU to be changed on the fly
 	# cat trip_point_0_temp
 	95000
 
+5.4 USB feature
+---------------
+
+5.4.1 USB OTG Usage and verification
+------------------------------------
+
+1. Verify the OTG device mode
+
+Plug in cable B and connect to the host machine.
+
+Board configuration:
+
+        # ifconfig usb0 192.168.1.10
+
+Host machine configuration:
+
+        # sudo ifconfig usb0 192.168.1.100
+        # ping 192.168.1.10 -c 2
+        PING 192.168.1.10 (192.168.1.10) 56(84) bytes of data.
+        64 bytes from 192.168.1.10: icmp_req=1 ttl=64 time=2.06 ms
+        64 bytes from 192.168.1.10: icmp_req=2 ttl=64 time=0.286 ms
+        ...
+
+2. Switch to OTG host mode
+
+Replace cable B with cable A.
+
+5.5 Audio
+---------
+Play audio messages:
+
+        # aplay -Dhw:0,0 stereo1644s.wav
+
 
 6. Creating Partitioned Images(WIC)
 ===================================
