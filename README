@@ -1,4 +1,4 @@
-	 i.MX6 UltraLite 14x14 EVK Board Support Package
+	 i.MX6 UltraLite 14x14 EVK / i.MX6SX Sabre-SDB Board Support Package
 
 1. About this document
 ======================
@@ -97,11 +97,15 @@ and are copied to the export directory of the TFTP server.
 ---------------------
 	For i.MX6 UltraLite:
 	# tftpboot 0x80800000 zImage
+	For i.MX6SX:
+        # tftp 0x92000000 zImage
 
 4.2.3 Download DTB
 ------------------
 	For i.MX6 UltraLite:
 	tftpboot 0x83000000 imx6ul-14x14-evk.dtb
+	For i.MX6SX:
+        # tftp 0x98000000 imx6sx-sdb.dtb
 
 4.2.4 Set bootargs and boot the system
 --------------------------------------
@@ -110,9 +114,16 @@ and are copied to the export directory of the TFTP server.
                  nfsroot=<nfs server>:<nfs root>,v3,tcp \
                  ip=<target IP>::<gateway>:<netmask>::eth0:off \
 	#bootz 0x80800000 - 0x83000000
+	For i.MX6SX:
+        # setenv bootargs console=ttymxc0,115200 root=/dev/nfs rw \
+                 nfsroot=<nfs server>:<nfs root>,v3,tcp \
+                 ip=<target IP>::<gateway>:<netmask>::eth0:off \
+                 video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666
+	bootz 0x92000000 - 0x98000000
 
 5. Features
 ===========
+
 5.1 Static PM
 -------------
 
@@ -173,6 +184,45 @@ Play audio messages:
 
         # aplay -Dhw:0,0 stereo1644s.wav
 
+5.6 Backlight
+--------------
+
+        # echo 0 > /sys/class/backlight/backlight/brightness
+
+5.7 PCIe
+--------
+
+Since the on-board PCIe connector only exports the PETP0/N0, PERP0/N0 and 3.3V
+pins, any mini-PCIe devices that use other PCIe pins are not supported.
+The following PCIe peripherals:
+
+        Intel Centrino Advanced-N 6205
+        Intel Centrino Wireless-N 1030
+
+can be validated using the following steps:
+
+Simply add line as follows to ${buildprj}/build/conf/local.conf:
+
+        KERNEL_FEATURES_append = " features/iwlwifi/iwlwifi.scc"
+
+This will include the iwlwifi and mac80211 kernel modules in
+the root filesystem.
+
+echo IMAGE_INSTALL += "linux-firmware-iwlwifi" >> conf/local.conf
+This will add relevant WiFi card firmware (Intel 6205 WiFi firmware: iwlwifi-6000g2a-5.ucode) 
+
+Built and install them:
+
+        # bitbake wrlinux-image-glibc-xxx
+
+Execute the following commands to validate the WiFi cards:
+
+        # ifconfig wlan0 up
+        # iwconfig wlan0 essid <AP essid>
+        # dhclient wlan0
+        # ping <AP address> -i wlan0 -c 1
+
+NOTE: the PCIe driver does not support hotplug and suspend/resume.
 
 6. Creating Partitioned Images(WIC)
 ===================================
