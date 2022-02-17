@@ -1,4 +1,4 @@
-i.MX6 UltraLite 14x14 EVK Board Support Package
+i.MX6SX SABRE-SDB/i.MX6 UltraLite 14x14 EVK Board Support Package
 
 
 Table of Contents
@@ -16,12 +16,16 @@ This BSP supports the following boards:
 
    + I.MX6 UltraLite   : Board: Freescale UltraLite EVK REV C2 SCH-28616 700-28616 REV C
 			 CPU: PCIMX6G2CVM05AA CTAE1545
+   + I.MX6SX SABRE-SDB : Board: Freescale SABRE SD, SCH-27962 REV C, 700-27962 REV A2.
+			 CPU: PCIMX6X4EVN10AB P6P530W7
 
 2. Change History
 =================
 
   - 2022/01 (LINUXPG-1048): Wind River Linux10.21 RCPL10, support i.MX6 UltraLite 14x14 EVK
 						board based on v5.10/standard/nxp-sdk-5.10/nxp-soc.
+  - 2022/02 (LINUXPG-164): Wind River Linux10.21 RCPL11, support i.MX6SX SABRE-SDB board.
+						based on FSL IMX SDK v5.10
 
 3. BSP Features
 ===============
@@ -34,10 +38,17 @@ This BSP supports the following features.
   o General Platform
 	+ perf
 
+  o Bus
+	+ I2C: On-Chip I2C controller
+	+ PCIe: On-Chip PCIe controller(IMX6SX SABRE-SDB only)
+	+ SPI: Freescale ECSPI bus controller in master mode
+
   o Network
 	+ Ethernet: FEC 10/100/1000 MAC ethernet controller, KSZ9021 external PHY
+	+ CAN: FLEXCAN, Flexible controller area network (IMX6SX SABRE-SDB only)
 
   o USB
+	+ USB OTG: On-Chip UTMI transceiver, high/full/low speed
 	+ USB Host: 3 EHCI compatible host controller in the chip
 
   o Storage
@@ -56,7 +67,21 @@ This BSP supports the following features.
 
   o User_Interface_Multimedia
         + AUDIO:
-                + WM8960 codec (IMX6UL only)
+                + WM8960 codec
+		+ WM8962 codec
+	+ LVDS: On-Chip LVDS display bridge (LDB) will be used to connect the IPU to external
+                LVDS display interface, HannStar HSD100PXN1-A TFT LCD with XGA resolution, Framebuffer support
+	+ Backlight
+	+ IPU: On-Chip image processing unit(IMX6SX only)
+	+ V4L2 Output: The V4L2 output driver uses the IPU post-processing functions for video output.(IMX6SX only)
+	+ V4L2 Capture(IMX6Q and IMX6SX only)
+	+ Camera: OV5642 chip
+
+  o GPU
+	+ 3D:
+		+ Vivante GC400T (IMX6SX SABRE-SDB only)
+	+ 2D:
+		+ Vivante GC400T (IMX6SX SABRE-SDB only)
 
   o Power Mgmt
         + Suspend to RAM
@@ -93,5 +118,12 @@ IMX6 UltraLite 14x14 EVK:
 	Processor:             IMX6UL
         CPU Revision:          rev1.0
         Board Revision:        Freescale UltraLite EVK REV C2 SCH-28616 700-28616 REV C
+        BootLoader:            U-Boot
+        BootLoader Version:    U-Boot 2021.04-lf_v2021.04+g1c0116f3da (Sep 06 2021 - 08:48:23 +0000)
+
+IMX6SX SABRE-SDB:
+        Processor:             IMX6SX
+        CPU Revision:          rev1.2
+        Board Revision:        Freescale SABRE SDB SCH-27962 REV C, 700-27962 REV A2
         BootLoader:            U-Boot
         BootLoader Version:    U-Boot 2021.04-lf_v2021.04+g1c0116f3da (Sep 06 2021 - 08:48:23 +0000)
