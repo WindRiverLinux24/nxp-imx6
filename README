@@ -64,7 +64,7 @@ The following table summarizes the valid Wind River Linux distros for this BSP.
 For the supported kernel type for this BSP, please check the TARGET_SUPPORTED_KTYPES
 by running 'bitbake -e virtual/kernel | grep "^TARGET_SUPPORTED_KTYPES="'.
 
-Note: The preempt-rt ktype is not available for this BSP/Machine at this time.
+Note: The preempt-rt ktype can be used for this BSP/Machine.
 
 
 3. Board Specific Patches
@@ -224,6 +224,104 @@ Execute the following commands to validate the WiFi cards:
 
 NOTE: the PCIe driver does not support hotplug and suspend/resume.
 
+5.8 Graphics/GPU
+----------------
+
+If you want to build a project with i.mx6 GPU graphic support, please
+follow the steps as below:
+
+Create a project directory, and then setup project with the following arguments:
+
+        --machines nxp-imx6 --distros wrlinux-graphics --dl-layers
+
+Setup environment and create a build directory:
+
+        # . environment-setup-<host>-wrlinuxsdk-linux
+        # . oe-init-build-env <build>
+        # bitbake wrlinux-image-std-sato
+
+Generate imx6 graphic layer:
+Because of the licensing issue, nxp-imx6 layer doesn't integrate imx6's GPU or VPU
+hardware acceleration related packages into WRlinux product. So, if customer wants
+to run hardware graphic feature, please generate graphic with script scripts/generate-graphic-layer.sh.
+Detailed steps as below:
+<1>. Download SDK package(L5.10.9_1.0.0_MX6QDLSOLOX) with below command
+        # mkdir imx-yocto-bsp
+        # cd imx-yocto-bsp
+        # repo init -u https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-gatesgarth -m imx-5.10.9-1.0.0.xml
+        # repo sync
+
+<2>. Run scripts/generate-graphic-layer.sh script and set correct command-line options
+        # ./generate-graphic-layer.sh -h
+         Usage: source generate-graphic-layer.sh
+            Optional parameters: [-s source-dir] [-d destination-dir] [-h]
+
+            * [-s source-dir]: Source directory where the graphic layer come from
+            * [-d destination-dir]: Destination directory where the graphic will be merged into
+            * [-h]: help
+
+        # ./generate-graphic-layer.sh -s <nxp-sdk download directory>/imx-yocto-bsp/sources -d <wrlinux project directory>/layers/nxp-imx6/
+
+<3> Read WARNING information carefully, and then input 'y' if you want to generate imx6 graphic layer
+
+Use the command as below to add i.mx6 GPU graphic layer:
+
+        bitbake-layers add-layer path_to_WRLinux_product/layers/nxp-imx6/imx6-graphic
+
+Use the command as below to build rootfs:
+
+        bitbake wrlinux-image-std-sato
+
+NOTE:
+
+1. You must change the configuration to allow downloading of packages from the
+internet. Change BB_NO_NETWORK ?= "1" to BB_NO_NETWORK ?= "0" in the file
+${buildprj}/conf/local.conf.
+
+2. Since some packages which are used to support the graphic feature in
+nxp-imx6 are provided via binaries, when a nxp-imx6 project with
+graphic support is built, there will be error info as below:
+-----------ERROR--------------
+ERROR: imx-gpu-viv_6.4.0.p1.0-aarch32 do_unpack: To use 'imx-gpu-viv' you need to accept the Freescale EULA at 'path_to_WRLinux_product/layers/meta-freescale/EULA'. Please read it and in case you accept it, write: ACCEPT_FSL_EULA = "1" in your local.conf.
+------------------------------
+Please read the Freescale EULA file carefully, in case you accept it, write:
+ACCEPT_FSL_EULA = "1" to your local.conf file to continue the building.
+
+6. kexec/kdump
+==============
+
+For discussion purposes, some useful terminology will be described here.
+
+* boot kernel - the first kernel that you start and supports kexec, from U-Boot
+              for instance
+* capture kernel - the kernel that you reboot into after a boot kernel crash
+
+To build the boot kernel, enable kexec and kdump in your local.conf file:
+
+        WRTEMPLATE = "feature/kexec feature/kdump"
+
+6.1 kdump
+---------
+
+For the boot kernel:
+To reserve a memory region for the capture kernel, you need to pass the bootargs
+argument "crashkernel" to the boot kernel as follow:
+ - Without graphic hardware accelerator
+for I.MX6Q:
+    crashkernel=128M
+for I.MX6SX:
+    crashkernel=180M
+for I.MX6UL:
+    crashkernel=128M
+
+For the dump-capture kernel:
+Before booting the dump-capture kernel, add "maxcpus=1 cma=16M" to the boot parameter.
+NOTE: Use zImage as a secondary kernel. It can be found in the
+tmp-glibc/deploy/images/nxp-imx6/ directory.
+
+For more detailed info about kdump, refer to Documentation/kdump/kdump.txt
+in the kernel source tree.
+
 6. Creating Partitioned Images(WIC)
 ===================================
 
@@ -253,6 +351,9 @@ To burn uboot and WIC images to SD card, user need to execute command:
 For i.mx6ul:
 # dd if=wrlinux-image-std-nxp-imx6.wic of=/dev/your_sd_dev
 
+For i.mx6sx:
+# dd if=wrlinux-image-glibc-std-sato-nxp-imx6-imx6sx.wic of=/dev/your_sd_dev
+
 Prepare the bootloader image, user can get it from www.nxp.com
 # dd if=u-boot-imx6ul14x14evk_sd.imx of=/dev/your_sd_dev bs=1k seek=<x> conv=fsync
 
@@ -265,6 +366,12 @@ Board can boot automatically by set the below uboot environment variables:
 
 For i.mx6ul
 => setenv bootfile zImage; setenv fdtfile imx6ul-14x14-evk.dtb;  setenv loadaddr 0x80800000; setenv fdtaddr 0x83000000;
+=> setenv bootargs 'root=/dev/mmcblk1p2 rw rootdelay=5 console=ttymxc0,115200n8'
+=> setenv bootcmd 'fatload mmc 1:1 $loadaddr $bootfile; fatload mmc 1:1 $fdtaddr $fdtfile; bootz $loadaddr - $fdtaddr';
+=> saveenv; run bootcmd;
+
+For i.mx6sx
+=> setenv bootfile zImage; setenv fdtfile imx6ul-14x14-evk.dtb;  setenv loadaddr 0x92000000; setenv fdtaddr 0x98000000;
 => setenv bootargs 'root=/dev/mmcblk1p2 rw rootdelay=5 console=ttymxc0,115200n8'
 => setenv bootcmd 'fatload mmc 1:1 $loadaddr $bootfile; fatload mmc 1:1 $fdtaddr $fdtfile; bootz $loadaddr - $fdtaddr';
 => saveenv; run bootcmd;
