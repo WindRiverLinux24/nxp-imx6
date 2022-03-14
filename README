@@ -352,13 +352,16 @@ image to SD card directly by "dd" command.
 --------------------------
 
 To burn uboot and WIC images to SD card, user need to execute command:
-For i.mx6ul:
 # dd if=wrlinux-image-std-nxp-imx6.wic of=/dev/your_sd_dev
 
-For i.mx6sx:
-# dd if=wrlinux-image-glibc-std-sato-nxp-imx6-imx6sx.wic of=/dev/your_sd_dev
+# mkdir imx-yocto-bsp
+# cd imx-yocto-bsp
+# repo init -u https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-gatesgarth -m imx-5.10.9-1.0.0.xml
+# repo sync
+# DISTRO=fsl-imx-fb MACHINE=<machine name> source imx-setup-release.sh -b build-fb
+# #The machine name could be imx6ull14x14evk or imx6sxsabresd
+# bitbake u-boot-imx
 
-Prepare the bootloader image, user can get it from www.nxp.com
 # dd if=u-boot-imx6ul14x14evk_sd.imx of=/dev/your_sd_dev bs=1k seek=<x> conv=fsync
 
 Note: seek = "1"
