@@ -228,7 +228,12 @@ Execute the following commands to validate the WiFi cards:
 
 NOTE: the PCIe driver does not support hotplug and suspend/resume.
 
-5.8 Graphics/GPU
+5.8 Camera test note
+--------------------
+
+If we use gstream to record video, $V4L2SRC should be imxv4l2src.
+
+5.9 Graphics/GPU
 ----------------
 
 If you want to build a project with i.mx6 GPU graphic support, please
