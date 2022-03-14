@@ -182,6 +182,10 @@ Replace cable B with cable A.
 ---------
 Play audio messages:
 
+For imx6ul, enable Output Mixer PCM like the following:
+amixer sset 'Right Output Mixer PCM' on
+amixer sset 'Left Output Mixer PCM' on
+
         # aplay -Dhw:0,0 stereo1644s.wav
 
 5.6 Backlight
