@@ -69,12 +69,11 @@ This BSP supports the following features.
         + AUDIO:
                 + WM8960 codec
 		+ WM8962 codec
-	+ LVDS: On-Chip LVDS display bridge (LDB) will be used to connect the IPU to external
+	+ LVDS: On-Chip LVDS display bridge (LDB) will be used to connect the lcdif to external
                 LVDS display interface, HannStar HSD100PXN1-A TFT LCD with XGA resolution, Framebuffer support
 	+ Backlight
-	+ IPU: On-Chip image processing unit(IMX6SX only)
-	+ V4L2 Output: The V4L2 output driver uses the IPU post-processing functions for video output.(IMX6SX only)
-	+ V4L2 Capture(IMX6Q and IMX6SX only)
+	+ V4L2 Output: The V4L2 output driver uses the PiXel Processing Pipeline for video output.(IMX6SX only)
+	+ V4L2 Capture(IMX6SX only)
 	+ Camera: OV5642 chip
 
   o GPU
