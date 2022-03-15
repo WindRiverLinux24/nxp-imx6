@@ -137,7 +137,7 @@ INHERIT += "machine-overrides-extender"
 MACHINEOVERRIDES_EXTENDER_nxp-imx6   = "imx:imxfbdev:imxipu:imxvpu:imxvpucnm:imxgpu:imxgpu2d:imxgpu3d:mx6:mx6ul:mx6ull:mx6q:mx6dl:use-nxp-bsp"
 MACHINE_SOCARCH = "nxp_imx6"
 
-IMAGE_INSTALL_append_nxp-imx6 += "assimp devil imx-gpu-viv xf86-video-imx-vivante imx-gpu-g2d imx-gpu-apitrace imx-gpu-sdk imx-lib imx-vpu imx-gpu-viv-demos"
+IMAGE_INSTALL_append_nxp-imx6 += "assimp devil imx-gpu-viv xf86-video-imx-vivante imx-gpu-g2d imx-gpu-apitrace imx-gpu-sdk imx-lib imx-vpu imx-gpu-viv-demos imx-gst1.0-plugin"
 BANNER[nxp-imx6_default] = "The nxp-imx6 layer includes third party components, where additional third party licenses may apply."
 
 IMX_MIRROR ?= "https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/"
@@ -180,6 +180,7 @@ PNWHITELIST_openembedded-layer += 'fmt'
 PNWHITELIST_openembedded-layer += 'googletest'
 PNWHITELIST_imx6-graphic-layer += 'linux-imx-headers'
 PNWHITELIST_imx6-graphic-layer += 'libdrm'
+PNWHITELIST_imx6-graphic-layer += 'imx-gst1.0-plugin'
 
 # Remove conflicting backends.
 DISTRO_FEATURES_remove = "wayland"
@@ -272,9 +273,6 @@ SOURCE_DIR=$GRAPHIC_SRC/meta-freescale/
 file_copy recipes-graphics/drm/libdrm_2.4.99.imx.bb
 file_copy recipes-graphics/drm/libdrm/0001-meson-add-libdrm-vivante-to-the-meson-meta-data.patch
 file_copy recipes-graphics/drm/libdrm/musl-ioctl.patch
-SOURCE_DIR=$GRAPHIC_SRC/poky/meta/
-file_copy recipes-graphics/drm/libdrm_2.4.102.bb
-file_copy recipes-graphics/drm/files/0001-xf86drm.c-fix-build-failure.patch
 SOURCE_DIR=$GRAPHIC_SRC/meta-imx/meta-bsp/
 file_copy recipes-graphics/drm/libdrm_2.4.102.imx.bb
 file_copy recipes-graphics/drm/files/0001-meson-add-libdrm-vivante-to-the-meson-meta-data.patch
@@ -473,6 +471,23 @@ file_copy recipes-graphics/xorg-xserver/xserver-xf86-config_%.bbappend
 SOURCE_DIR=$GRAPHIC_SRC/meta-imx/meta-bsp/
 file_copy recipes-graphics/xorg-xserver/xserver-xf86-config/imx/xorg.conf
 file_copy recipes-graphics/xorg-xserver/xserver-xf86-config/imxdrm/xorg.conf
+
+SOURCE_DIR=$GRAPHIC_SRC/meta-imx/meta-bsp/
+file_copy recipes-multimedia/gstreamer/gst-plugins-package.inc
+file_copy recipes-multimedia/gstreamer/gstreamer1.0_1.18.0.imx.bb
+file_copy recipes-multimedia/gstreamer/gstreamer1.0-libav_1.18.0.bb
+file_copy recipes-multimedia/gstreamer/gstreamer1.0-plugins-bad_1.18.0.imx.bb
+file_copy recipes-multimedia/gstreamer/gstreamer1.0-plugins-base_1.18.0.imx.bb
+file_copy recipes-multimedia/gstreamer/gstreamer1.0-plugins-good_1.18.0.imx.bb
+file_copy recipes-multimedia/gstreamer/gstreamer1.0-plugins.inc
+file_copy recipes-multimedia/gstreamer/gstreamer1.0-plugins-ugly_1.18.0.bb
+file_copy recipes-multimedia/gstreamer/gstreamer1.0-rtsp-server_1.18.0.bb
+file_copy recipes-multimedia/gstreamer/imx-gst1.0-plugin_4.6.0.bb
+file_copy recipes-multimedia/imx-codec/imx-codec.inc
+file_copy recipes-multimedia/imx-codec/imx-codec_4.6.0.bb
+file_copy recipes-multimedia/imx-parser/imx-parser.inc
+file_copy recipes-multimedia/imx-parser/imx-parser_4.6.0.bb
+file_copy recipes-multimedia/imx-vpuwrap/imx-vpuwrap_4.6.0.bb
 
 file_copy recipes-kernel/linux/linux-imx-headers_5.10.bb \
                         "9iDEPENDS += \"rsync-native\"" \
