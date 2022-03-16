@@ -137,7 +137,7 @@ INHERIT += "machine-overrides-extender"
 MACHINEOVERRIDES_EXTENDER_nxp-imx6   = "imx:imxfbdev:imxipu:imxvpu:imxvpucnm:imxgpu:imxgpu2d:imxgpu3d:mx6:mx6ul:mx6ull:mx6q:mx6dl:use-nxp-bsp"
 MACHINE_SOCARCH = "nxp_imx6"
 
-IMAGE_INSTALL_append_nxp-imx6 += "assimp devil imx-gpu-viv xf86-video-imx-vivante imx-gpu-g2d imx-gpu-apitrace imx-gpu-sdk imx-lib imx-vpu imx-gpu-viv-demos imx-gst1.0-plugin"
+IMAGE_INSTALL_append_nxp-imx6 += "assimp devil imx-gpu-viv imx-gpu-g2d imx-gpu-apitrace imx-gpu-sdk imx-lib imx-vpu imx-gpu-viv-demos imx-gst1.0-plugin"
 BANNER[nxp-imx6_default] = "The nxp-imx6 layer includes third party components, where additional third party licenses may apply."
 
 IMX_MIRROR ?= "https://www.nxp.com/lgfiles/NMG/MAD/YOCTO/"
@@ -158,6 +158,9 @@ PREFERRED_PROVIDER_virtual/libgl_nxp-imx6 = "imx-gpu-viv"
 PREFERRED_PROVIDER_virtual/libg2d_nxp-imx6 = "imx-gpu-g2d"
 PREFERRED_VERSION_imx-vpu = "5.4.39.1"
 BBMASK += "./meta/recipes-graphics/drm/libdrm"
+PREFERRED_VERSION_wayland-protocols = "1.18.imx"
+PREFERRED_VERSION_libdrm = "2.4.99.imx"
+PREFERRED_VERSION_weston = "9.0.0.imx"
 
 PNWHITELIST_openembedded-layer += 'freeglut'
 PNWHITELIST_imx6-graphic-layer += 'imx-gpu-viv'
@@ -181,9 +184,29 @@ PNWHITELIST_openembedded-layer += 'googletest'
 PNWHITELIST_imx6-graphic-layer += 'linux-imx-headers'
 PNWHITELIST_imx6-graphic-layer += 'libdrm'
 PNWHITELIST_imx6-graphic-layer += 'imx-gst1.0-plugin'
+PNWHITELIST_openembedded-layer += 'libxaw'
+PNWHITELIST_openembedded-layer += 'xterm'
+PNWHITELIST_imx6-graphic-layer += 'weston-init'
+PNWHITELIST_imx6-graphic-layer += 'weston'
 
 # Remove conflicting backends.
-DISTRO_FEATURES_remove = "wayland"
+DISTRO_FEATURES_remove = "directfb x11"
+DISTRO_FEATURES_append = " wayland pam systemd"
+
+IMAGE_INSTALL_append += " \\
+    \${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'weston-init', '', d)} \\
+    imx-gpu-apitrace \\
+"
+
+
+IMAGE_FEATURES_remove = "\${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'x11-base  x11-sato', '', d)}"
+
+# QA check settings - a little stricter than the OE-Core defaults
+WARN_TO_ERROR_QA = "already-stripped compile-host-path install-host-path \\
+                    installed-vs-shipped ldflags pn-overrides rpaths staticdev \\
+                    useless-rpaths"
+WARN_QA_remove = "\${WARN_TO_ERROR_QA}"
+ERROR_QA_append = " \${WARN_TO_ERROR_QA}"
 EOF
 fi
 
@@ -304,7 +327,8 @@ file_copy recipes-graphics/imx-gpu-g2d/imx-gpu-g2d_6.4.3.p1.2.bb \
 
 SOURCE_DIR=$GRAPHIC_SRC/meta-imx/meta-sdk/
 file_copy recipes-graphics/imx-gpu-sdk/imx-gpu-sdk_5.6.2.bb \
-			"s/fsl-eula-unpack/fsl-eula-unpack-graphic/g"
+			"s/fsl-eula-unpack/fsl-eula-unpack-graphic/g" \
+			"s/'DISTRO_FEATURES', 'wayland'/'DISTRO_FEATURES', 'weston-demo'/g"
 
 SOURCE_DIR=$GRAPHIC_SRC/meta-imx/meta-bsp/
 file_copy recipes-graphics/imx-gpu-viv/imx-gpu-viv/Add-dummy-libgl.patch
@@ -329,7 +353,8 @@ file_copy recipes-graphics/matchbox-wm/matchbox-wm/0001-Fix-build-with-gcc-10.pa
 file_copy recipes-graphics/matchbox-wm/matchbox-wm/kbdconfig
 
 SOURCE_DIR=$GRAPHIC_SRC/meta-freescale/
-file_copy recipes-graphics/mesa/mesa_%.bbappend
+file_copy recipes-graphics/mesa/mesa_%.bbappend \
+			"s/'DISTRO_FEATURES', 'wayland'/'DISTRO_FEATURES', 'weston-demo'/g"
 file_copy recipes-graphics/mesa/mesa-demos_%.bbappend
 file_copy recipes-graphics/mesa/mesa-demos/Add-OpenVG-demos-to-support-wayland.patch
 file_copy recipes-graphics/mesa/mesa-demos/fix-clear-build-break.patch
