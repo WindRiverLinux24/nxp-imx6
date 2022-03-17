@@ -508,9 +508,11 @@ file_copy recipes-multimedia/gstreamer/gstreamer1.0-plugins.inc
 file_copy recipes-multimedia/gstreamer/gstreamer1.0-plugins-ugly_1.18.0.bb
 file_copy recipes-multimedia/gstreamer/gstreamer1.0-rtsp-server_1.18.0.bb
 file_copy recipes-multimedia/gstreamer/imx-gst1.0-plugin_4.6.0.bb
-file_copy recipes-multimedia/imx-codec/imx-codec.inc
+file_copy recipes-multimedia/imx-codec/imx-codec.inc \
+			"s/fsl-eula-unpack/fsl-eula-unpack-graphic/g"
 file_copy recipes-multimedia/imx-codec/imx-codec_4.6.0.bb
-file_copy recipes-multimedia/imx-parser/imx-parser.inc
+file_copy recipes-multimedia/imx-parser/imx-parser.inc \
+			"s/fsl-eula-unpack/fsl-eula-unpack-graphic/g"
 file_copy recipes-multimedia/imx-parser/imx-parser_4.6.0.bb
 file_copy recipes-multimedia/imx-vpuwrap/imx-vpuwrap_4.6.0.bb
 
@@ -526,6 +528,7 @@ SOURCE_DIR=$GRAPHIC_SRC/meta-freescale/
 file_copy recipes-graphics/waffle/waffle_%.bbappend
 file_copy recipes-graphics/waffle/waffle/0001-meson-Add-missing-wayland-dependency-on-EGL.patch
 file_copy recipes-graphics/waffle/waffle/0002-meson-Separate-surfaceless-option-from-x11.patch
+file_copy recipes-graphics/libepoxy/libepoxy_1.5.%.bbappend
 
 SOURCE_DIR=$GRAPHIC_SRC/meta-imx/
 file_copy EULA.txt
