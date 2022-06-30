@@ -233,8 +233,8 @@ NOTE: the PCIe driver does not support hotplug and suspend/resume.
 
 If we use gstream to record video, $V4L2SRC should be imxv4l2src.
 
-5.9 Graphics/GPU
-----------------
+5.9 Graphics
+------------
 
 If you want to build a project with i.mx6 GPU graphic support, please
 follow the steps as below:
@@ -249,35 +249,119 @@ Setup environment and create a build directory:
         # . oe-init-build-env <build>
         # bitbake wrlinux-image-std-sato
 
-Generate imx6 graphic layer:
-Because of the licensing issue, nxp-imx6 layer doesn't integrate imx6's GPU or VPU
+5.10 GPU
+--------
+Because of the licesen issue, nxp-imx6 layer doesn't integrate imx6's GPU(GC400T) or VPU
 hardware acceleration related packages into WRlinux product. So, if customer wants
-to run hardware graphic feature, please generate graphic with script scripts/generate-graphic-layer.sh.
-Detailed steps as below:
-<1>. Download SDK package(L5.10.9_1.0.0_MX6QDLSOLOX) with below command
-        # mkdir imx-yocto-bsp
-        # cd imx-yocto-bsp
-        # repo init -u https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-gatesgarth -m imx-5.10.9-1.0.0.xml
-        # repo sync
+to run hardware graphic feature. Detail steps as below:
 
-<2>. Run scripts/generate-graphic-layer.sh script and set correct command-line options
-        # ./generate-graphic-layer.sh -h
-         Usage: source generate-graphic-layer.sh
-            Optional parameters: [-s source-dir] [-d destination-dir] [-h]
+<1> You must change the configuration to allow downloading of packages from the
+internet. Change BB_NO_NETWORK ?= "1" to BB_NO_NETWORK ?= "0" in the file
+${buildprj}/conf/local.conf.
 
-            * [-s source-dir]: Source directory where the graphic layer come from
-            * [-d destination-dir]: Destination directory where the graphic will be merged into
-            * [-h]: help
+<2> echo the following content to local.conf:
 
-        # ./generate-graphic-layer.sh -s <nxp-sdk download directory>/imx-yocto-bsp/sources -d <wrlinux project directory>/layers/nxp-imx6/
+BSP_NXP_DERIVED:append:nxp-imx6  = " nxp-imx6"
+MACHINEOVERRIDES:prepend:nxp-imx6 = "imxfbdev:imxipu:imxvpu:imxvpucnm:imxgpu:imxgpu2d:imxgpu3d:mx6:mx6sx:mx6sl:mx6ul:mx6ull:mx6q:mx6dl:use-nxp-bsp:imx-nxp-bsp:imxpxp:"
 
-<3> Read WARNING information carefully, and then input 'y' if you want to generate imx6 graphic layer
+IMAGE_INSTALL:append = " assimp devil imx-gpu-viv imx-gpu-g2d imx-gpu-sdk imx-vpu imx-gpu-viv-demos weston weston-init imx-gst1.0-plugin"
 
-Use the command as below to add i.mx6 GPU graphic layer:
+MACHINE_SOCARCH = "nxp_imx6"
 
-        bitbake-layers add-layer path_to_WRLinux_product/layers/nxp-imx6/imx6-graphic
+PREFERRED_PROVIDER_virtual/egl:nxp-imx6 = "imx-gpu-viv"
+PREFERRED_PROVIDER_virtual/libgles1:nxp-imx6 = "imx-gpu-viv"
+PREFERRED_PROVIDER_virtual/libgles2:nxp-imx6 = "imx-gpu-viv"
+PREFERRED_PROVIDER_virtual/libgl:nxp-imx6 = "imx-gpu-viv"
+PREFERRED_PROVIDER_virtual/libg2d:nxp-imx6 = "imx-gpu-g2d"
+PREFERRED_VERSION_gstreamer1.0-plugins-base:mx6 = "1.18.5.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-bad:mx6  = "1.18.5.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-good:mx6 = "1.18.5.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-good-qt:mx6 = "1.18.5.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-ugly:mx6 = "1.18.5"
+PREFERRED_VERSION_gstreamer1.0:mx6              = "1.18.5.imx"
+PREFERRED_VERSION_gstreamer1.0-libav:mx6        = "1.18.5"
+PREFERRED_VERSION_gstreamer1.0-rtsp-server:mx6  = "1.18.5"
+PREFERRED_VERSION_fmt:mx6  = "8.0.1"
+PREFERRED_VERSION_vulkan-headers:mx6  = "1.2.182.0"
+PREFERRED_VERSION_vulkan-loader:mx6 = "1.2.182.0"
+PREFERRED_VERSION_mesa:mx6 = "21.2.4"
+PREFERRED_VERSION_cmake:mx6 = "3.21.1"
+PREFERRED_VERSION_drm:mx6 = "2.4.107.imx"
+PREFERRED_VERSION_weston:mx6 = "9.0.0.imx"
 
-Use the command as below to build rootfs:
+DISTRO_FEATURES:remove = "directfb x11"
+DISTRO_FEATURES:append = " wayland pam"
+MACHINE_HAS_VIVANTE_KERNEL_DRIVER_SUPPORT = "1"
+IMAGE_FEATURES:remove = "x11-base  x11-sato"
+IMAGE_FEATURES:append = " weston"
+
+# QA check settings - a little stricter than the OE-Core defaults
+WARN_TO_ERROR_QA = "already-stripped compile-host-path install-host-path \
+                    installed-vs-shipped ldflags pn-overrides rpaths staticdev \
+                    useless-rpaths"
+WARN_QA:remove = "${WARN_TO_ERROR_QA}"
+ERROR_QA:append = " ${WARN_TO_ERROR_QA}"
+
+ACCEPT_FSL_EULA = "1"
+
+WRL_RECIPES:openembedded-layer += 'freeglut'
+WRL_RECIPES:fsl-bsp-release += 'imx-gpu-viv'
+WRL_RECIPES:fsl-bsp-release += 'mesa'
+WRL_RECIPES:fsl-bsp-release += 'imx-gpu-viv-demos'
+WRL_RECIPES:fsl-sdk-release += 'imx-gpu-sdk'
+WRL_RECIPES:fsl-bsp-release += 'imx-gpu-g2d'
+WRL_RECIPES:fsl-bsp-release += 'imx-dpu-g2d'
+WRL_RECIPES:fsl-bsp-release += 'imx-vpu'
+WRL_RECIPES:freescale-distro-layer += 'assimp'
+WRL_RECIPES:fsl-sdk-release += 'devil'
+WRL_RECIPES:freescale-layer += 'weston'
+WRL_RECIPES:freescale-layer += 'imx-lib'
+WRL_RECIPES:fsl-bsp-release += 'systemd-gpuconfig'
+WRL_RECIPES:fsl-bsp-release += 'fmt'
+WRL_RECIPES:fsl-bsp-release += 'imx-gst1.0-plugin'
+WRL_RECIPES:fsl-bsp-release += 'imx-parser'
+WRL_RECIPES:fsl-bsp-release += 'imx-codec'
+WRL_RECIPES:fsl-bsp-release += 'imx-vpuwrap'
+WRL_RECIPES:freescale-layer += 'linux-imx-headers'
+WRL_RECIPES:openembedded-layer += 'ccid'
+WRL_RECIPES:openembedded-layer += 'pcsc-lite'
+WRL_RECIPES:openembedded-layer += 'spirv-tools'
+WRL_RECIPES:freescale-distro-layer += 'glslang'
+WRL_RECIPES:fsl-bsp-release += 'wayland-protocols'
+WRL_RECIPES:fsl-bsp-release += 'libdrm'
+WRL_RECIPES:openembedded-layer += 'nlohmann-json'
+WRL_RECIPES:openembedded-layer += 'fmt'
+WRL_RECIPES:openembedded-layer += 'googletest'
+WRL_RECIPES:openembedded-layer += 'rapidjson'
+WRL_RECIPES:openembedded-layer += 'glm'
+WRL_RECIPES:fsl-sdk-release += 'stb'
+WRL_RECIPES:fsl-sdk-release += 'rapidvulkan'
+WRL_RECIPES:freescale-distro-layer += 'rapidopencl'
+WRL_RECIPES:fsl-sdk-release += 'half'
+WRL_RECIPES:fsl-sdk-release += 'gli'
+WRL_RECIPES:freescale-distro-layer += 'rapidopenvx'
+WRL_RECIPES:fsl-sdk-release += 'vulkan-validationlayers'
+WRL_RECIPES:fsl-bsp-release += 'linux-imx-headers'
+WRL_RECIPES:openembedded-layer += 'vulkan-headers'
+WRL_RECIPES:fsl-sdk-release += 'vulkan-loader'
+WRL_RECIPES:openembedded-layer += 'vulkan-tools'
+WRL_RECIPES:fsl-bsp-release += 'weston-init'
+WRL_RECIPES:fsl-bsp-release += 'weston'
+WRL_RECIPES:fsl-bsp-release += 'gstreamer1.0-plugins-base'
+WRL_RECIPES:fsl-bsp-release += 'gstreamer1.0'
+WRL_RECIPES:fsl-bsp-release += 'gstreamer1.0-plugins-base'
+WRL_RECIPES:fsl-bsp-release += 'gstreamer1.0-plugins-good'
+WRL_RECIPES:fsl-bsp-release += 'gstreamer1.0-plugins-bad'
+WRL_RECIPES:openembedded-layer += 'libxaw'
+WRL_RECIPES:openembedded-layer += 'xterm'
+WRL_RECIPES:meta-python += 'python3-wheel'
+WRL_RECIPES:meta-python += 'python3-pybind11'
+WRL_RECIPES:openembedded-layer += 'can-utils'
+WRL_RECIPES:openembedded-layer += 'libsocketcan'
+WRL_RECIPES:freescale-distro += 'assimp'
+WRL_RECIPES:freescale-distro += 'devil'
+
+<3> Use the command as below to build rootfs:
 
         bitbake wrlinux-image-std-sato
 
