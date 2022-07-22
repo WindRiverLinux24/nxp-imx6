@@ -284,8 +284,9 @@ ${buildprj}/conf/local.conf.
 
 <2> echo the following content to local.conf:
 
+ACCEPT_FSL_EULA = "1"
 BSP_NXP_DERIVED:append:nxp-imx6  = " nxp-imx6"
-MACHINEOVERRIDES:prepend:nxp-imx6 = "imxfbdev:imxipu:imxvpu:imxvpucnm:imxgpu:imxgpu2d:imxgpu3d:mx6:mx6sx:mx6sl:mx6ul:mx6ull:mx6q:mx6dl:use-nxp-bsp:imx-nxp-bsp:imxpxp:"
+MACHINEOVERRIDES:prepend:nxp-imx6 = "imxfbdev:imxipu:imxvpu:imxvpucnm:imxgpu:imxgpu2d:imxgpu3d:mx6:mx6sx:mx6sl:mx6ul:mx6ull:mx6q:mx6dl:use-nxp-bsp:mx6q-nxp-bsp:mx6sx-nxp-bsp:"
 
 IMAGE_INSTALL:append = " assimp devil imx-gpu-viv imx-gpu-g2d imx-gpu-sdk imx-vpu imx-gpu-viv-demos weston weston-init imx-gst1.0-plugin"
 
@@ -296,21 +297,18 @@ PREFERRED_PROVIDER_virtual/libgles1:nxp-imx6 = "imx-gpu-viv"
 PREFERRED_PROVIDER_virtual/libgles2:nxp-imx6 = "imx-gpu-viv"
 PREFERRED_PROVIDER_virtual/libgl:nxp-imx6 = "imx-gpu-viv"
 PREFERRED_PROVIDER_virtual/libg2d:nxp-imx6 = "imx-gpu-g2d"
-PREFERRED_VERSION_gstreamer1.0-plugins-base:mx6 = "1.18.5.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-bad:mx6  = "1.18.5.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-good:mx6 = "1.18.5.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-good-qt:mx6 = "1.18.5.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-ugly:mx6 = "1.18.5"
-PREFERRED_VERSION_gstreamer1.0:mx6              = "1.18.5.imx"
-PREFERRED_VERSION_gstreamer1.0-libav:mx6        = "1.18.5"
-PREFERRED_VERSION_gstreamer1.0-rtsp-server:mx6  = "1.18.5"
-PREFERRED_VERSION_fmt:mx6  = "8.0.1"
+PREFERRED_VERSION_gstreamer1.0-plugins-base:mx6 = "1.20.0.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-bad:mx6  = "1.20.0.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-good:mx6 = "1.20.0.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-good-qt:mx6 = "1.20.0.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-ugly:mx6 = "1.20.0"
+PREFERRED_VERSION_gstreamer1.0:mx6              = "1.20.0.imx"
+PREFERRED_VERSION_gstreamer1.0-libav:mx6        = "1.20.0"
+PREFERRED_VERSION_gstreamer1.0-rtsp-server:mx6  = "1.20.0"
 PREFERRED_VERSION_vulkan-headers:mx6  = "1.2.182.0"
 PREFERRED_VERSION_vulkan-loader:mx6 = "1.2.182.0"
-PREFERRED_VERSION_mesa:mx6 = "21.2.4"
-PREFERRED_VERSION_cmake:mx6 = "3.21.1"
-PREFERRED_VERSION_drm:mx6 = "2.4.107.imx"
-PREFERRED_VERSION_weston:mx6 = "9.0.0.imx"
+PREFERRED_VERSION_libdrm:mx6 = "2.4.109.imx"
+PREFERRED_VERSION_weston:mx6 = "10.0.0.imx"
 
 DISTRO_FEATURES:remove = "directfb x11"
 DISTRO_FEATURES:append = " wayland pam"
@@ -337,7 +335,6 @@ WRL_RECIPES:fsl-bsp-release += 'imx-dpu-g2d'
 WRL_RECIPES:fsl-bsp-release += 'imx-vpu'
 WRL_RECIPES:freescale-distro-layer += 'assimp'
 WRL_RECIPES:fsl-sdk-release += 'devil'
-WRL_RECIPES:freescale-layer += 'weston'
 WRL_RECIPES:freescale-layer += 'imx-lib'
 WRL_RECIPES:fsl-bsp-release += 'systemd-gpuconfig'
 WRL_RECIPES:fsl-bsp-release += 'fmt'
@@ -375,6 +372,7 @@ WRL_RECIPES:fsl-bsp-release += 'gstreamer1.0'
 WRL_RECIPES:fsl-bsp-release += 'gstreamer1.0-plugins-base'
 WRL_RECIPES:fsl-bsp-release += 'gstreamer1.0-plugins-good'
 WRL_RECIPES:fsl-bsp-release += 'gstreamer1.0-plugins-bad'
+WRL_RECIPES:fsl-bsp-release += 'freerdp'
 WRL_RECIPES:openembedded-layer += 'libxaw'
 WRL_RECIPES:openembedded-layer += 'xterm'
 WRL_RECIPES:meta-python += 'python3-wheel'
