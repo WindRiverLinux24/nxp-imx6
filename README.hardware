@@ -25,12 +25,12 @@ This BSP supports the following boards:
 2. Change History
 =================
 
-  - 2022/01 (LINUXPG-1048): Wind River Linux10.21 RCPL10, support i.MX6 UltraLite 14x14 EVK
-						board based on v5.10/standard/nxp-sdk-5.10/nxp-soc.
-  - 2022/02 (LINUXPG-164): Wind River Linux10.21 RCPL11, support i.MX6SX SABRE-SDB board.
-						based on FSL IMX SDK v5.10
-  - 2022/07 (LINUXPG-1138): Wind River Linux10.22 RCPL2, support i.MX6Q SABRE-SD board.
- 						based on FSL IMX SDK v5.10
+  - 2022/06 (LINUXPG-1136): Wind River Linux10.22 support i.MX6 UltraLite 14x14 EVK
+						board based onFSL IMX SDK v5.15.
+  - 2022/06 (LINUXPG-1137): Wind River Linux10.22 support i.MX6SX SABRE-SDB board
+						based on FSL IMX SDK v5.15.
+  - 2022/07 (LINUXPG-1138): Wind River Linux10.22 RCPL2 support i.MX6Q SABRE-SD board
+ 						based on FSL IMX SDK v5.15.
 
 3. BSP Features
 ===============
