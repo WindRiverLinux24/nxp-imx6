@@ -59,7 +59,6 @@ This BSP supports the following features.
   o Storage
 	+ SD/MMC: On-Chip ultra secured digital host controller (uSDHC)
 	+ NOR Flash: 32MB N25Q256A QSPI NOR Flash (IMX6SX only)
-		     4MB M25P32 SPI NOR Flash (IMX6Q SABRE-SD only)
 	+ eMMC: On-chip embedded multimediacard, 1bit/4bit/8bit SDR/DDR mode (IMX6Q SABRE-SD only)
 
   o Power Mgmt
