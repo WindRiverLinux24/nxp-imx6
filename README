@@ -248,7 +248,7 @@ If we use gstream to record video, $V4L2SRC should be imxv4l2src.
 
 To enable HDMI as the default framebuffer device, add:
 
-	video=mxcfb0:dev=hdmi,1920x1080M@60,if=RGB24
+	video=mxcfb1:dev=hdmi,1920x1080M@60,if=RGB24
 
 To enable LVDS as the default framebuffer device, add:
 
