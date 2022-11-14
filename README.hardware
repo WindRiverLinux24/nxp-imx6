@@ -61,16 +61,6 @@ This BSP supports the following features.
 	+ NOR Flash: 32MB N25Q256A QSPI NOR Flash (IMX6SX only)
 	+ eMMC: On-chip embedded multimediacard, 1bit/4bit/8bit SDR/DDR mode (IMX6Q SABRE-SD only)
 
-  o Power Mgmt
-	+ Suspend to RAM
-	+ CPU Freq
-	+ Bus Freq
-
-  o Misc Devices
-	+ UART: On-Chip High-Speed UART
-	+ Sensors: On-Chip temperature sensor
-	+ Power Regulator: ANATOP PMIC power regulator
-
   o User_Interface_Multimedia
         + AUDIO:
                 + WM8960 codec
