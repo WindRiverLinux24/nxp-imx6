@@ -288,7 +288,7 @@ ACCEPT_FSL_EULA = "1"
 BSP_NXP_DERIVED:append:nxp-imx6  = " nxp-imx6"
 MACHINEOVERRIDES:prepend:nxp-imx6 = "imxfbdev:imxipu:imxvpu:imxvpucnm:imxgpu:imxgpu2d:imxgpu3d:mx6:mx6sx:mx6sl:mx6ul:mx6ull:mx6q:mx6dl:use-nxp-bsp:mx6q-nxp-bsp:mx6sx-nxp-bsp:"
 
-IMAGE_INSTALL:append = " assimp devil imx-gpu-viv imx-gpu-g2d imx-gpu-sdk imx-vpu imx-gpu-viv-demos weston weston-init imx-gst1.0-plugin"
+IMAGE_INSTALL:append = " assimp devil imx-gpu-viv imx-gpu-g2d imx-gpu-sdk imx-vpu imx-gpu-viv-demos weston weston-init imx-gst1.0-plugin gstreamer1.0 gstreamer1.0-plugins-good gstreamer1.0-plugins-base"
 
 MACHINE_SOCARCH = "nxp_imx6"
 
@@ -297,18 +297,17 @@ PREFERRED_PROVIDER_virtual/libgles1:nxp-imx6 = "imx-gpu-viv"
 PREFERRED_PROVIDER_virtual/libgles2:nxp-imx6 = "imx-gpu-viv"
 PREFERRED_PROVIDER_virtual/libgl:nxp-imx6 = "imx-gpu-viv"
 PREFERRED_PROVIDER_virtual/libg2d:nxp-imx6 = "imx-gpu-g2d"
-PREFERRED_VERSION_gstreamer1.0-plugins-base:mx6 = "1.20.0.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-bad:mx6  = "1.20.0.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-good:mx6 = "1.20.0.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-good-qt:mx6 = "1.20.0.imx"
-PREFERRED_VERSION_gstreamer1.0-plugins-ugly:mx6 = "1.20.0"
-PREFERRED_VERSION_gstreamer1.0:mx6              = "1.20.0.imx"
-PREFERRED_VERSION_gstreamer1.0-libav:mx6        = "1.20.0"
-PREFERRED_VERSION_gstreamer1.0-rtsp-server:mx6  = "1.20.0"
+PREFERRED_VERSION_gstreamer1.0-plugins-base:mx6 = "1.20.3.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-bad:mx6  = "1.20.3.imx"
+PREFERRED_VERSION_gstreamer1.0-plugins-good:mx6 = "1.20.3.imx"
+PREFERRED_VERSION_gstreamer1.0:mx6              = "1.20.3.imx"
 PREFERRED_VERSION_vulkan-headers:mx6  = "1.2.182.0"
 PREFERRED_VERSION_vulkan-loader:mx6 = "1.2.182.0"
-PREFERRED_VERSION_libdrm:mx6 = "2.4.109.imx"
-PREFERRED_VERSION_weston:mx6 = "10.0.0.imx"
+PREFERRED_VERSION_libdrm:mx6 = "2.4.114.imx"
+PREFERRED_VERSION_weston:mx6 = "10.0.3.imx"
+PREFERRED_VERSION_wayland-protocols:mx6 = "1.31.imx"
+PREFERRED_PROVIDER_virtual/opencl-icd:imxgpu ?= "imx-gpu-viv"
+PREFERRED_PROVIDER_opencl-icd-loader:imxgpu  ?= "imx-gpu-viv"
 
 DISTRO_FEATURES:remove = "directfb x11"
 DISTRO_FEATURES:append = " wayland pam"
@@ -354,10 +353,8 @@ WRL_RECIPES:openembedded-layer += 'fmt'
 WRL_RECIPES:openembedded-layer += 'googletest'
 WRL_RECIPES:openembedded-layer += 'rapidjson'
 WRL_RECIPES:openembedded-layer += 'glm'
-WRL_RECIPES:fsl-sdk-release += 'stb'
 WRL_RECIPES:fsl-sdk-release += 'rapidvulkan'
 WRL_RECIPES:freescale-distro-layer += 'rapidopencl'
-WRL_RECIPES:fsl-sdk-release += 'half'
 WRL_RECIPES:fsl-sdk-release += 'gli'
 WRL_RECIPES:freescale-distro-layer += 'rapidopenvx'
 WRL_RECIPES:fsl-sdk-release += 'vulkan-validationlayers'
@@ -381,6 +378,9 @@ WRL_RECIPES:openembedded-layer += 'can-utils'
 WRL_RECIPES:openembedded-layer += 'libsocketcan'
 WRL_RECIPES:freescale-distro += 'assimp'
 WRL_RECIPES:freescale-distro += 'devil'
+WRL_RECIPES:fsl-sdk-release += 'libxdg-shell'
+WRL_RECIPES:freescale-distro += 'half'
+WRL_RECIPES:freescale-distro += 'stb'
 
 <3> Use the command as below to build rootfs:
 
