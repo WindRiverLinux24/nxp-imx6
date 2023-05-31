@@ -4,3 +4,5 @@ IMAGE_INSTALL += "pm-utils"
 IMAGE_INSTALL += "alsa-utils"
 IMAGE_INSTALL += "mtdev"
 IMAGE_INSTALL += "linux-firmware-imx-sdma-imx6q"
+
+require conf/make_nxp_imx6_wic.inc
