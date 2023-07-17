@@ -464,6 +464,6 @@ For i.mx6ul
 
 For i.mx6sx
 => setenv bootfile zImage; setenv fdtfile imx6sx-sdb.dtb;  setenv loadaddr 0x92000000; setenv fdtaddr 0x98000000;
-=> setenv bootargs 'root=/dev/mmcblk1p2 rw rootdelay=5 console=ttymxc0,115200n8'
-=> setenv bootcmd 'fatload mmc 1:1 $loadaddr $bootfile; fatload mmc 1:1 $fdtaddr $fdtfile; bootz $loadaddr - $fdtaddr';
+=> setenv bootargs 'root=/dev/mmcblk3p2 rw rootdelay=5 console=ttymxc0,115200n8'
+=> setenv bootcmd 'fatload mmc 3:1 $loadaddr $bootfile; fatload mmc 3:1 $fdtaddr $fdtfile; bootz $loadaddr - $fdtaddr';
 => saveenv; run bootcmd;
