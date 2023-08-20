@@ -1,4 +1,4 @@
-	 i.MX6 UltraLite 14x14 EVK / i.MX6SX Sabre-SDB Board Support Package
+	 i.MX6 UltraLite 14x14 EVK / i.MX6SX Sabre-SDB / i.MX6Q Sabre-SD Board Support Package
 
 1. About this document
 ======================
@@ -99,6 +99,8 @@ and are copied to the export directory of the TFTP server.
 	# tftpboot 0x80800000 zImage
 	For i.MX6SX:
         # tftp 0x92000000 zImage
+	For i.MX6Q:
+	# tftp 0x12000000 zImage
 
 4.2.3 Download DTB
 ------------------
@@ -106,6 +108,8 @@ and are copied to the export directory of the TFTP server.
 	tftpboot 0x83000000 imx6ul-14x14-evk.dtb
 	For i.MX6SX:
         # tftp 0x98000000 imx6sx-sdb.dtb
+	For i.MX6Q:
+	# tftp 0x18000000 imx6q-sabresd.dtb
 
 4.2.4 Set bootargs and boot the system
 --------------------------------------
@@ -120,6 +124,12 @@ and are copied to the export directory of the TFTP server.
                  ip=<target IP>::<gateway>:<netmask>::eth0:off \
                  video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666
 	bootz 0x92000000 - 0x98000000
+	For i.MX6Q:
+	# setenv bootargs console=ttymxc0,115200 root=/dev/nfs rw \
+		 nfsroot=<nfs server>:<nfs root>,v3,tcp \
+		 ip=<target IP>::<gateway>:<netmask>::eth0:off \
+		 video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666
+	# bootz 0x12000000 - 0x18000000
 
 5. Features
 ===========
@@ -311,8 +321,6 @@ WARN_TO_ERROR_QA = "already-stripped compile-host-path install-host-path \
 WARN_QA:remove = "${WARN_TO_ERROR_QA}"
 ERROR_QA:append = " ${WARN_TO_ERROR_QA}"
 
-ACCEPT_FSL_EULA = "1"
-
 CUSTOMER_RECIPES:openembedded-layer += 'freeglut'
 CUSTOMER_RECIPES:fsl-bsp-release += 'imx-gpu-viv'
 CUSTOMER_RECIPES:fsl-bsp-release += 'mesa'
@@ -414,6 +422,8 @@ for I.MX6SX:
     crashkernel=180M
 for I.MX6UL:
     crashkernel=128M
+for I.MX6Q:
+    crashkernel=180M
 
 For the dump-capture kernel:
 Before booting the dump-capture kernel, add "maxcpus=1 cma=16M" to the boot parameter.
@@ -466,4 +476,10 @@ For i.mx6sx
 => setenv bootfile zImage; setenv fdtfile imx6sx-sdb.dtb;  setenv loadaddr 0x92000000; setenv fdtaddr 0x98000000;
 => setenv bootargs 'root=/dev/mmcblk3p2 rw rootdelay=5 console=ttymxc0,115200n8'
 => setenv bootcmd 'fatload mmc 3:1 $loadaddr $bootfile; fatload mmc 3:1 $fdtaddr $fdtfile; bootz $loadaddr - $fdtaddr';
+=> saveenv; run bootcmd;
+
+For i.mx6q
+=> setenv bootfile zImage; setenv fdtfile imx6q-sabresd.dtb;  setenv loadaddr 0x12000000; setenv fdtaddr 0x18000000;
+=> setenv bootargs 'root=/dev/mmcblk1p2 rw rootdelay=5 console=ttymxc0,115200n8'
+=> setenv bootcmd 'fatload mmc 1:1 $loadaddr $bootfile; fatload mmc 1:1 $fdtaddr $fdtfile; bootz $loadaddr - $fdtaddr';
 => saveenv; run bootcmd;
