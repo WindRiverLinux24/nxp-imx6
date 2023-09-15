@@ -4,11 +4,14 @@ nxp_imx6_wic() {
     for config in ${UBOOT_CONFIG}; do
         cd "${DEPLOY_DIR_IMAGE}"
 
-        cp ${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.wic ${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}-${config}.wic
-        dd if=u-boot-nxp-imx6.imx-${config} of=${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}-${config}.wic bs=512 seek=2 conv=fsync,notrunc
+        ofname=${IMAGE_LINK_NAME}-${config}${IMAGE_VERSION_SUFFIX}.rootfs.wic
+        cp ${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.wic ${IMGDEPLOYDIR}/$ofname
+        dd if=u-boot-nxp-imx6.imx-${config} of=${IMGDEPLOYDIR}/$ofname bs=512 seek=2 conv=fsync,notrunc
 
         cd "${IMGDEPLOYDIR}"
-        bmaptool create "${IMAGE_LINK_NAME}-${config}.wic" -o "${IMAGE_LINK_NAME}-${config}.wic.bmap"
+        bmaptool create "$ofname" -o "${ofname}.bmap"
+        linkname="${IMAGE_LINK_NAME}-${config}.wic"
+        ln -sf $ofname $linkname
     done
 
     # Remove the default wic file
