@@ -451,10 +451,6 @@ tmp-glibc/deploy/images/nxp-imx6/wrlinux-image-std-nxp-imx6.wic
 
 Then user can write the output image to a SD card:
 
-Since this BSP doesn't have a firmware to read the uboot from a partition table,
-WIC image only contains kernel, dtb and rootfs. We still need to write U-boot
-image to SD card directly by "dd" command.
-
 7.1 Burn images to SD card
 --------------------------
 
