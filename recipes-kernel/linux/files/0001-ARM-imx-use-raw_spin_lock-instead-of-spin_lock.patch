@@ -1,0 +1,93 @@
+From 93e32a209d967b3ffa9820025ec0d0b816a84847 Mon Sep 17 00:00:00 2001
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
+Date: Wed, 20 Sep 2023 15:52:12 +0800
+Subject: [PATCH] ARM: imx: use raw_spin_lock instead of spin_lock
+
+Use raw_spin_lock instead of spin_lock,
+this patch fixes the following warning:
+
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:46
+in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 506, name: sh
+preempt_count: 2, expected: 0
+RCU nest depth: 0, expected: 0
+Preemption disabled at:
+[<00000000>] 0x0
+CPU: 0 PID: 506 Comm: sh Not tainted 6.1.53-rt10-yocto-preempt-rt #1
+Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
+ unwind_backtrace from show_stack+0x18/0x1c
+ show_stack from dump_stack_lvl+0x40/0x4c
+ dump_stack_lvl from __might_resched+0x17c/0x1bc
+ __might_resched from rt_spin_lock+0x2c/0x90
+ rt_spin_lock from imx_gpc_irq_set_wake+0x34/0x68
+ imx_gpc_irq_set_wake from irq_set_irq_wake+0x154/0x1ac
+ irq_set_irq_wake from gpio_set_wake_irq+0x44/0x78
+ gpio_set_wake_irq from irq_set_irq_wake+0x154/0x1ac
+ irq_set_irq_wake from gpio_keys_suspend+0x88/0x1b8
+ gpio_keys_suspend from dpm_run_callback+0x3c/0x188
+ dpm_run_callback from __device_suspend+0x124/0x5c8
+ __device_suspend from dpm_suspend+0x158/0x328
+ dpm_suspend from dpm_suspend_start+0x6c/0x74
+ dpm_suspend_start from suspend_devices_and_enter+0x294/0x8f4
+ suspend_devices_and_enter from pm_suspend+0x2e0/0x33c
+ pm_suspend from state_store+0x74/0xd0
+
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+---
+ arch/arm/mach-imx/gpc.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/arch/arm/mach-imx/gpc.c b/arch/arm/mach-imx/gpc.c
+index 98caf9c67a25..dd01584051ed 100644
+--- a/arch/arm/mach-imx/gpc.c
++++ b/arch/arm/mach-imx/gpc.c
+@@ -51,7 +51,7 @@ static u32 gpc_wake_irqs[IMR_NUM];
+ static u32 gpc_saved_imrs[IMR_NUM];
+ static u32 gpc_mf_irqs[IMR_NUM];
+ static u32 gpc_mf_request_on[IMR_NUM];
+-static DEFINE_SPINLOCK(gpc_lock);
++static DEFINE_RAW_SPINLOCK(gpc_lock);
+ 
+ void imx_gpc_add_m4_wake_up_irq(u32 hwirq, bool enable)
+ {
+@@ -64,10 +64,10 @@ void imx_gpc_add_m4_wake_up_irq(u32 hwirq, bool enable)
+ 		return;
+ 
+ 	mask = 1 << hwirq % 32;
+-	spin_lock_irqsave(&gpc_lock, flags);
++	raw_spin_lock_irqsave(&gpc_lock, flags);
+ 	gpc_wake_irqs[idx] = enable ? gpc_wake_irqs[idx] | mask :
+ 		gpc_wake_irqs[idx] & ~mask;
+-	spin_unlock_irqrestore(&gpc_lock, flags);
++	raw_spin_unlock_irqrestore(&gpc_lock, flags);
+ }
+ 
+ void imx_gpc_hold_m4_in_sleep(void)
+@@ -233,10 +233,10 @@ static int imx_gpc_irq_set_wake(struct irq_data *d, unsigned int on)
+ 	u32 mask;
+ 
+ 	mask = 1 << d->hwirq % 32;
+-	spin_lock_irqsave(&gpc_lock, flags);
++	raw_spin_lock_irqsave(&gpc_lock, flags);
+ 	gpc_wake_irqs[idx] = on ? gpc_wake_irqs[idx] | mask :
+ 				  gpc_wake_irqs[idx] & ~mask;
+-	spin_unlock_irqrestore(&gpc_lock, flags);
++	raw_spin_unlock_irqrestore(&gpc_lock, flags);
+ 
+ 	/*
+ 	 * Do *not* call into the parent, as the GIC doesn't have any
+@@ -375,10 +375,10 @@ int imx_gpc_mf_power_on(unsigned int irq, unsigned int on)
+ 	u32 mask;
+ 
+ 	mask = 1 << (d->irq_data.hwirq % 32);
+-	spin_lock_irqsave(&gpc_lock, flags);
++	raw_spin_lock_irqsave(&gpc_lock, flags);
+ 	gpc_mf_request_on[idx] = on ? gpc_mf_request_on[idx] | mask :
+ 				  gpc_mf_request_on[idx] & ~mask;
+-	spin_unlock_irqrestore(&gpc_lock, flags);
++	raw_spin_unlock_irqrestore(&gpc_lock, flags);
+ 
+ 	return 0;
+ }
+-- 
+2.25.1
+
