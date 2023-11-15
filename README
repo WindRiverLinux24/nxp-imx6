@@ -115,18 +115,18 @@ and are copied to the export directory of the TFTP server.
 --------------------------------------
 	For i.MX6 UltraLite:
 	# setenv bootargs console=ttymxc0,115200 root=/dev/nfs rw \
-                 nfsroot=<nfs server>:<nfs root>,v3,tcp \
+                 nfsroot=<nfs server>:<nfs root> \
                  ip=<target IP>::<gateway>:<netmask>::eth0:off \
 	#bootz 0x80800000 - 0x83000000
 	For i.MX6SX:
         # setenv bootargs console=ttymxc0,115200 root=/dev/nfs rw \
-                 nfsroot=<nfs server>:<nfs root>,v3,tcp \
+                 nfsroot=<nfs server>:<nfs root> \
                  ip=<target IP>::<gateway>:<netmask>::eth0:off \
                  video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666
 	bootz 0x92000000 - 0x98000000
 	For i.MX6Q:
 	# setenv bootargs console=ttymxc0,115200 root=/dev/nfs rw \
-		 nfsroot=<nfs server>:<nfs root>,v3,tcp \
+		 nfsroot=<nfs server>:<nfs root> \
 		 ip=<target IP>::<gateway>:<netmask>::eth0:off \
 		 video=mxcfb0:dev=ldb,LDB-XGA,if=RGB666
 	# bootz 0x12000000 - 0x18000000
