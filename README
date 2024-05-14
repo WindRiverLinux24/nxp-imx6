@@ -285,7 +285,7 @@ ${buildprj}/conf/local.conf.
 <2> echo the following content to local.conf:
 
 ACCEPT_FSL_EULA = "1"
-MACHINEOVERRIDES:prepend:nxp-imx6 = "imxfbdev:imxipu:imxvpu:imxvpucnm:imxgpu:imxgpu2d:imxgpu3d:mx6:mx6sx:mx6sl:mx6ul:mx6ull:mx6q:mx6dl:use-nxp-bsp:mx6q-nxp-bsp:mx6sx-nxp-bsp:"
+MACHINEOVERRIDES:prepend:nxp-imx6 = "imxfbdev:imxipu:imxvpu:imxvpucnm:imxgpu:imxgpu2d:imxgpu3d:mx6:mx6sx:mx6sl:mx6ul:mx6ull:mx6q:mx6dl:use-nxp-bsp:mx6q-nxp-bsp:mx6sx-nxp-bsp:mx6-nxp-bsp:"
 
 IMAGE_INSTALL:append = " assimp devil imx-gpu-viv imx-gpu-g2d imx-gpu-sdk imx-vpu imx-gpu-viv-demos weston weston-init imx-gst1.0-plugin gstreamer1.0 gstreamer1.0-plugins-good gstreamer1.0-plugins-base"
 
