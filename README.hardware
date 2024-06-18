@@ -40,7 +40,7 @@ This BSP supports the following features.
 
   o Bus
 	+ I2C: On-Chip I2C controller
-	+ PCIe: On-Chip PCIe controller(IMX6SX and IMX6Q only)
+	+ PCIe: On-Chip PCIe controller(IMX6SX only)
 	+ SPI: Freescale ECSPI bus controller in master mode
 
   o Network
@@ -54,7 +54,6 @@ This BSP supports the following features.
   o Storage
 	+ SD/MMC: On-Chip ultra secured digital host controller (uSDHC)
 	+ NOR Flash: 32MB N25Q256A QSPI NOR Flash (IMX6SX only)
-	+ eMMC: On-chip embedded multimediacard, 1bit/4bit/8bit SDR/DDR mode (IMX6Q SABRE-SD only)
 
   o User_Interface_Multimedia
         + AUDIO:
@@ -65,28 +64,23 @@ This BSP supports the following features.
                 LVDS display interface, HannStar HSD100PXN1-A TFT LCD with XGA resolution, Framebuffer support
 	+ Backlight
 	+ V4L2 Output: The V4L2 output driver uses the PiXel Processing Pipeline for video output.(IMX6SX only)
-	+ IPU: On-Chip image processing unit(IMX6SX and IMX6Q)
+	+ IPU: On-Chip image processing unit(IMX6SX)
 	+ V4L2 Output: The V4L2 output driver uses the IPU post-processing functions for video output.(IMX6SX)
-	+ HDMI: On-Chip HDMI controller (IMX6Q only)
-	+ IPU: On-Chip image processing unit(IMX6SX and IMX6Q)
-	+ V4L2 Output: The V4L2 output driver uses the IPU post-processing functions for video output.(IMX6SX and IMX6Q only)
+	+ IPU: On-Chip image processing unit(IMX6SX)
+	+ V4L2 Output: The V4L2 output driver uses the IPU post-processing functions for video output.(IMX6SX only)
 	+ V4L2 Capture(IMX6SX only)
 	+ Camera: OV5642 chip
 
   o GPU
 	+ 3D:
-		+ Vivante GC2000 (IMX6Q SABRE-SD only)
 		+ Vivante GC400T (IMX6SX SABRE-SDB only)
 	+ 2D:
 		+ Vivante GC400T (IMX6SX SABRE-SDB only)
-		+ Vivante GC320 (IMX6Q SABRE-SD only)
-		+ Vector: Vivante GC355 (IMX6Q SABRE-SD only)
 
   o Power Mgmt
         + Suspend to RAM
         + CPU Freq
         + Bus Freq
-	+ CPU idle (Only state0 and state1 are supported by IMX6Q SABRE-SD)
 
   o Misc Devices
         + UART: On-Chip High-Speed UART
