@@ -18,18 +18,14 @@ This BSP supports the following boards:
 			 CPU: PCIMX6G2CVM05AA CTAE1545
    + I.MX6SX SABRE-SDB : Board: Freescale SABRE SD, SCH-27962 REV C, 700-27962 REV A2.
 			 CPU: PCIMX6X4EVN10AB P6P530W7
-   +  I.MX6Q SABRE-SD   : Board: Freescale SABRE SD, SCH-27392 REV C4, 700-27392 REV C.
-			 CPU: PCIMX6Q6AVT10AC SBAE1234
 
 2. Change History
 =================
 
-  - 2023/06 (LINUXPG-1580): Wind River Linux10.23 support i.MX6 UltraLite 14x14 EVK
+  - 2024/08 (LINUXPG-2295): Wind River Linux10.24 support i.MX6 UltraLite 14x14 EVK
 						board based onFSL IMX SDK v6.1.
-  - 2023/06 (LINUXPG-1581): Wind River Linux10.23 support i.MX6SX SABRE-SDB board
-						based on FSL IMX SDK v6.1.
-  - 2023/07 (LINUXPG-1695): Wind River Linux10.23 RCPL2 support i.MX6Q SABRE-SD board
-						based on FSL IMX SDK v6.1.
+  - 2024/08 (LINUXPG-2296): Wind River Linux10.24 support i.MX6SX SABRE-SDB board
+						based on FSL IMX SDK v6.6.
 
 3. BSP Features
 ===============
