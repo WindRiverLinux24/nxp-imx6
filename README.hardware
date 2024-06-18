@@ -118,18 +118,11 @@ IMX6 UltraLite 14x14 EVK:
         CPU Revision:          rev1.0
         Board Revision:        Freescale UltraLite EVK REV C2 SCH-28616 700-28616 REV C
         BootLoader:            U-Boot
-        BootLoader Version:    U-Boot 2022.04-imx_v2022.04_5.15.71-2.2.0+g7376547b9e (Mar 01 2023 - 07:35:40 +0000)
+        BootLoader Version:    U-Boot 2023.04+gf8a2983ec83+p0 (Mar 04 2024 - 07:25:04 +0000) 
 
 IMX6SX SABRE-SDB:
         Processor:             IMX6SX
         CPU Revision:          rev1.2
         Board Revision:        Freescale SABRE SDB SCH-27962 REV C, 700-27962 REV A2
         BootLoader:            U-Boot
-        BootLoader Version:    U-Boot 2022.04-imx_v2022.04_5.15.71-2.2.0+g7376547b9e (Mar 01 2023 - 07:35:40 +0000)
-
-IMX6Q SABRE-SD:
-	Processor:             IMX6Q
-	CPU Revision:          rev1.2 (PCIMX6Q6AVT10AC)
-	Board Revision:        Freescale SABRE SD (SCH-27392 REV C4, 700-27392 REV C)
-	BootLoader:            U-Boot
-	BootLoader Version:    U-Boot 2022.04-imx_v2022.04_5.15.71-2.2.0+g7376547b9e (Mar 01 2023 - 07:35:40 +0000)
+        BootLoader Version:    U-Boot 2023.04+gf8a2983ec83+p0 (Mar 04 2024 - 07:25:04 +0000)
