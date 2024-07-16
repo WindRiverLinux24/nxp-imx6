@@ -61,15 +61,15 @@ This BSP supports the following features.
 		+ WM8962 codec
 		+ HDMI codec (IMX6Q SABRE-SD only)
 	+ LVDS: On-Chip LVDS display bridge (LDB) will be used to connect the lcdif to external
-                LVDS display interface, HannStar HSD100PXN1-A TFT LCD with XGA resolution, Framebuffer support
-	+ Backlight
+                LVDS display interface, HannStar HSD100PXN1-A TFT LCD with XGA resolution, Framebuffer support.(IMX6SX only)
+	+ Backlight.(IMX6SX only)
 	+ V4L2 Output: The V4L2 output driver uses the PiXel Processing Pipeline for video output.(IMX6SX only)
 	+ IPU: On-Chip image processing unit(IMX6SX)
 	+ V4L2 Output: The V4L2 output driver uses the IPU post-processing functions for video output.(IMX6SX)
 	+ IPU: On-Chip image processing unit(IMX6SX)
 	+ V4L2 Output: The V4L2 output driver uses the IPU post-processing functions for video output.(IMX6SX only)
 	+ V4L2 Capture(IMX6SX only)
-	+ Camera: OV5642 chip
+	+ Camera: OV5642 chip.(IMX6SX only)
 
   o GPU
 	+ 3D:
