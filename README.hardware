@@ -18,12 +18,16 @@ This BSP supports the following boards:
 			 CPU: PCIMX6G2CVM05AA CTAE1545
    + I.MX6SX SABRE-SDB : Board: Freescale SABRE SD, SCH-27962 REV C, 700-27962 REV A2.
 			 CPU: PCIMX6X4EVN10AB P6P530W7
+   + I.MX6Q SABRE-SD   : Board: Freescale SABRE SD, SCH-27392 REV C4, 700-27392 REV C.
+			 CPU: PCIMX6Q6AVT10AC SBAE1234
 
 2. Change History
 =================
 
+  - 2024/11 (LINUXPG-2295): Wind River Linux10.24 support i.MX6Quad SABRE SD board
+						based on FSL IMX SDK v6.6.
   - 2024/08 (LINUXPG-2295): Wind River Linux10.24 support i.MX6 UltraLite 14x14 EVK
-						board based onFSL IMX SDK v6.1.
+						board based on FSL IMX SDK v6.6.
   - 2024/08 (LINUXPG-2296): Wind River Linux10.24 support i.MX6SX SABRE-SDB board
 						based on FSL IMX SDK v6.6.
 
@@ -40,7 +44,7 @@ This BSP supports the following features.
 
   o Bus
 	+ I2C: On-Chip I2C controller
-	+ PCIe: On-Chip PCIe controller(IMX6SX only)
+	+ PCIe: On-Chip PCIe controller(IMX6SX and IMX6Q only)
 	+ SPI: Freescale ECSPI bus controller in master mode
 
   o Network
@@ -54,6 +58,7 @@ This BSP supports the following features.
   o Storage
 	+ SD/MMC: On-Chip ultra secured digital host controller (uSDHC)
 	+ NOR Flash: 32MB N25Q256A QSPI NOR Flash (IMX6SX only)
+	+ eMMC: On-chip embedded multimediacard, 1bit/4bit/8bit SDR/DDR mode (IMX6Q SABRE-SD only)
 
   o User_Interface_Multimedia
         + AUDIO:
@@ -62,25 +67,30 @@ This BSP supports the following features.
 		+ HDMI codec (IMX6Q SABRE-SD only)
 	+ LVDS: On-Chip LVDS display bridge (LDB) will be used to connect the lcdif to external
                 LVDS display interface, HannStar HSD100PXN1-A TFT LCD with XGA resolution, Framebuffer support.(IMX6SX only)
-	+ Backlight.(IMX6SX only)
+	+ Backlight.(IMX6SX and IMX6Q)
 	+ V4L2 Output: The V4L2 output driver uses the PiXel Processing Pipeline for video output.(IMX6SX only)
-	+ IPU: On-Chip image processing unit(IMX6SX)
+	+ IPU: On-Chip image processing unit(IMX6SX and IMX6Q)
 	+ V4L2 Output: The V4L2 output driver uses the IPU post-processing functions for video output.(IMX6SX)
-	+ IPU: On-Chip image processing unit(IMX6SX)
-	+ V4L2 Output: The V4L2 output driver uses the IPU post-processing functions for video output.(IMX6SX only)
+	+ HDMI: On-Chip HDMI controller (IMX6Q only)
+	+ IPU: On-Chip image processing unit(IMX6SX and IMX6Q)
+	+ V4L2 Output: The V4L2 output driver uses the IPU post-processing functions for video output.(IMX6SX and IMX6Q only)
 	+ V4L2 Capture(IMX6SX only)
 	+ Camera: OV5642 chip.(IMX6SX only)
 
   o GPU
 	+ 3D:
+		+ Vivante GC2000 (IMX6Q SABRE-SD only)
 		+ Vivante GC400T (IMX6SX SABRE-SDB only)
 	+ 2D:
 		+ Vivante GC400T (IMX6SX SABRE-SDB only)
+		+ Vivante GC320 (IMX6Q SABRE-SD only)
+		+ Vector: Vivante GC355 (IMX6Q SABRE-SD only)
 
   o Power Mgmt
         + Suspend to RAM
         + CPU Freq
         + Bus Freq
+	+ CPU idle (Only state0 and state1 are supported by IMX6Q SABRE-SD)
 
   o Misc Devices
         + UART: On-Chip High-Speed UART
@@ -118,5 +128,12 @@ IMX6SX SABRE-SDB:
         Processor:             IMX6SX
         CPU Revision:          rev1.2
         Board Revision:        Freescale SABRE SDB SCH-27962 REV C, 700-27962 REV A2
+        BootLoader:            U-Boot
+        BootLoader Version:    U-Boot 2023.04+gf8a2983ec83+p0 (Mar 04 2024 - 07:25:04 +0000)
+
+IMX6Q SABRE-SD:
+        Processor:             IMX6Q
+        CPU Revision:          rev1.2
+        Board Revision:        Freescale SABRE SD (SCH-27392 REV C4, 700-27392 REV C)
         BootLoader:            U-Boot
         BootLoader Version:    U-Boot 2023.04+gf8a2983ec83+p0 (Mar 04 2024 - 07:25:04 +0000)
