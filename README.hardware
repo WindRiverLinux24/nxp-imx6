@@ -24,7 +24,7 @@ This BSP supports the following boards:
 2. Change History
 =================
 
-  - 2024/11 (LINUXPG-2295): Wind River Linux10.24 support i.MX6Quad SABRE SD board
+  - 2024/11 (LINUXPG-2401): Wind River Linux10.24 support i.MX6Quad SABRE SD board
 						based on FSL IMX SDK v6.6.
   - 2024/08 (LINUXPG-2295): Wind River Linux10.24 support i.MX6 UltraLite 14x14 EVK
 						board based on FSL IMX SDK v6.6.
