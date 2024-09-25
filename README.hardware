@@ -65,17 +65,17 @@ This BSP supports the following features.
                 + WM8960 codec
 		+ WM8962 codec
 		+ HDMI codec (IMX6Q SABRE-SD only)
-	+ LVDS: On-Chip LVDS display bridge (LDB) will be used to connect the lcdif to external
-                LVDS display interface, HannStar HSD100PXN1-A TFT LCD with XGA resolution, Framebuffer support.(IMX6SX only)
-	+ Backlight.(IMX6SX and IMX6Q)
-	+ V4L2 Output: The V4L2 output driver uses the PiXel Processing Pipeline for video output.(IMX6SX only)
-	+ IPU: On-Chip image processing unit(IMX6SX and IMX6Q)
-	+ V4L2 Output: The V4L2 output driver uses the IPU post-processing functions for video output.(IMX6SX)
+	+ LVDS:
+                + On-Chip LVDS display bridge (LDB) will be used to connect the lcdif to external
+                + LVDS display interface, HannStar HSD100PXN1-A TFT LCD with XGA resolution, Framebuffer support (IMX6SX and IMX6Q)
+	+ Backlight (IMX6SX and IMX6Q)
+	+ Camera: OV5640 chip (IMX6SX and IMX6Q)
+	+ IPU: On-Chip image processing unit (IMX6Q only)
 	+ HDMI: On-Chip HDMI controller (IMX6Q only)
-	+ IPU: On-Chip image processing unit(IMX6SX and IMX6Q)
-	+ V4L2 Output: The V4L2 output driver uses the IPU post-processing functions for video output.(IMX6SX and IMX6Q only)
-	+ V4L2 Capture(IMX6SX only)
-	+ Camera: OV5642 chip.(IMX6SX only)
+	+ V4L2 Capture (IMX6SX only)
+	+ V4L2 Output:
+                + The V4L2 output driver uses the PiXel Processing Pipeline for video output (IMX6SX only)
+                + The V4L2 output driver uses the IPU post-processing functions for video output (IMX6Q only)
 
   o GPU
 	+ 3D:
