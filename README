@@ -286,9 +286,9 @@ ${buildprj}/conf/local.conf.
 
 BB_NO_NETWORK = '0'
 ACCEPT_FSL_EULA = "1"
-MACHINEOVERRIDES:prepend:nxp-imx6 = "imxfbdev:imxipu:imxvpu:imxvpucnm:imxgpu:imxgpu2d:imxgpu3d:mx6:mx6sx:mx6sl:mx6ul:mx6ull:mx6q:mx6dl:use-nxp-bsp:mx6q-nxp-bsp:mx6sx-nxp-bsp:mx6-nxp-bsp:"
+MACHINEOVERRIDES:prepend:nxp-imx6 = "imxfbdev:imxipu:imxvpu:imxvpucnm:imxgpu:imxgpu2d:imxgpu3d:mx6:mx6sx:mx6sl:mx6ul:mx6ull:mx6q:mx6dl:use-nxp-bsp:mx6q-nxp-bsp:mx6sx-nxp-bsp:mx6-nxp-bsp:imx-generic-bsp:"
 
-IMAGE_INSTALL:append = " assimp devil imx-gpu-viv imx-gpu-g2d imx-gpu-sdk imx-vpu imx-gpu-viv-demos weston weston-init imx-gst1.0-plugin gstreamer1.0 gstreamer1.0-plugins-good gstreamer1.0-plugins-base"
+IMAGE_INSTALL:append = " assimp devil imx-gpu-viv imx-gpu-g2d imx-gpu-sdk imx-vpu imx-gpu-viv-demos weston weston-init imx-gst1.0-plugin gstreamer1.0 gstreamer1.0-plugins-good gstreamer1.0-plugins-base firmware-imx-vpu-imx6q"
 
 MACHINE_SOCARCH = "nxp_imx6"
 
@@ -380,6 +380,7 @@ CUSTOMER_RECIPES:fsl-sdk-release += 'libxdg-shell'
 CUSTOMER_RECIPES:freescale-distro += 'half'
 CUSTOMER_RECIPES:freescale-distro += 'stb'
 CUSTOMER_RECIPES:openembedded-layer += 'pugixml'
+CUSTOMER_RECIPES:fsl-bsp-release += "firmware-imx"
 
 <3> Use the command as below to build rootfs:
 
