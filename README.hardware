@@ -137,3 +137,23 @@ IMX6Q SABRE-SD:
         Board Revision:        Freescale SABRE SD (SCH-27392 REV C4, 700-27392 REV C)
         BootLoader:            U-Boot
         BootLoader Version:    U-Boot 2024.04-lf_v2024.04+gde16f4f1+p0 (Sep 02 2024 - 10:44:35 +0000)
+
+4.3 Specify boot medium
+-----------------------
+
+4.3.1 MCIMX6Q-SDP (SCH-27392 REV C4, 700-27392 REV C)
+-----------------------------------------------------
+
+1. Booting from SD card
+
+The following table shows the boot switch settings for SD1 boot
+
+Switch	D1	D2	D3	D4	D5	D6	D7	D8
+SW6	OFF	ON	OFF	OFF	OFF	OFF	ON	OFF
+
+2. Booting from eMMC on board
+
+The following table shows the boot switch settings for eMMC boot
+
+Switch	D1	D2	D3	D4	D5	D6	D7	D8
+SW6	ON	ON	OFF	ON	OFF	ON	ON	OFF
