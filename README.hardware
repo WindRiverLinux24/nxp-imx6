@@ -44,7 +44,7 @@ This BSP supports the following features.
 
   o Bus
 	+ I2C: On-Chip I2C controller
-	+ PCIe: On-Chip PCIe controller(IMX6SX and IMX6Q only)
+	+ PCIe: On-Chip PCIe controller(IMX6SX only)
 	+ SPI: Freescale ECSPI bus controller in master mode
 
   o Network
@@ -101,6 +101,13 @@ This BSP supports the following features.
         + Power Regulator: ANATOP PMIC power regulator
         + SDMA: On-Chip smart direct memory access controller
         + PWM: Pulse width modulator
+
+3.2 Unsupported Features
+========================
+
+The following features are not supported and not validated.
+
+	x PCIe: On-Chip PCIe controller (IMX6Q)
 
 4. BSP Notes
 ============
