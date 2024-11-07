@@ -1,0 +1,33 @@
+From 28e1264556692f7e2fd24df7716b842bde89a368 Mon Sep 17 00:00:00 2001
+From: Ruiqiang Hao <Ruiqiang.Hao@windriver.com>
+Date: Tue, 5 Nov 2024 11:21:08 +0800
+Subject: [PATCH] mxc: IPU3: Prevent NULL pointer access in ipu_task_thread()
+ initialization
+
+In the ipu_task_thread() function, use the current thread's PID instead
+of retrieving it from a potentially uninitialized struct pointer, this
+will prevent NULL pointer dereference issue.
+
+Upstream-Status: Pending
+
+Signed-off-by: Ruiqiang Hao <Ruiqiang.Hao@windriver.com>
+---
+ drivers/mxc/ipu3/ipu_device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/mxc/ipu3/ipu_device.c b/drivers/mxc/ipu3/ipu_device.c
+index e22feb04633c..68470c7e2257 100644
+--- a/drivers/mxc/ipu3/ipu_device.c
++++ b/drivers/mxc/ipu3/ipu_device.c
+@@ -3259,7 +3259,7 @@ static int ipu_task_thread(void *argv)
+ 	if (!data->is_vdoa) {
+ 		cpu = cpumask_first(cpu_online_mask);
+ 		cpumask_set_cpu(cpu, &cpu_mask);
+-		ret = sched_setaffinity(data->ipu->thread[data->id]->pid,
++		ret = sched_setaffinity(task_pid_nr(current),
+ 			&cpu_mask);
+ 		if (ret < 0) {
+ 			pr_err("%s: sched_setaffinity fail:%d.\n", __func__, ret);
+-- 
+2.44.1
+
