@@ -7,7 +7,6 @@ TARGET_SUPPORTED_KTYPES:nxp-imx6 = "standard preempt-rt"
 
 FILESEXTRAPATHS:prepend:nxp-imx6 := "${THISDIR}/files:"
 SRC_URI:append:nxp-imx6 = " \
-    file://0001-mxc-IPU3-Prevent-NULL-pointer-access-in-ipu_task_thr.patch \
     file://0001-Revert-arm-dts-imx6q-sabresd-Enable-imx6q-pcie.patch \
 "
 
